@@ -1,0 +1,17 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace V4.Models.DataModels
+{
+    public class v4Context : DbContext
+    {
+        // base() calls the parent class' constructor passing the "options" parameter along
+        public v4Context(DbContextOptions options) : base(options) { }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<User> Users { get; set; }
+    }
+}
