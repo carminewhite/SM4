@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace V4.Models.DataModels
+namespace V4.Models
 {
     public class v4Context : DbContext
     {

@@ -1,0 +1,40 @@
+﻿@model Customer
+<div class="row">
+    <partial name="_NavLeft" />
+    <div class="col-10 border p-3">
+        <div class="row">
+
+            <div class="col-6 mt-4">
+                <h3>@Model.FirstName @Model.LastName</h3>
+                <p>
+                    @Model.Address<br>
+                @Model.City, @Model.State, @Model.Zip
+            </p>
+        </div>
+        <div class="col-6 mt-4">
+            <p>Monthly Recurring Revenue: $147</p>
+            <p>Yearly Recurring Revenue: $1,764</p>
+            <p>Customer Value:  $5,292</p>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Job ID</th>
+                <th scope="col">Date</th>
+                <th scope="col">Team</th>
+                <th scope="col">Revenue</th>
+                <th scope="col">Cost</th>
+                <th scope="col">Gross Profit</th>
+                <th scope="col">GPM</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <!-- Placeholder -->
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+</div>

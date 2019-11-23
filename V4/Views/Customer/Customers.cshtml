@@ -1,0 +1,35 @@
+﻿@model List<Customer>
+    <div class="row">
+        <partial name="_NavLeft" />
+        <div class="col-10 border">
+            <h3 class="mt-4">Customers</h3>
+            <input type="text" placeholder="Search Customers">
+            <a href="find" class="btn-sm btn-secondary">Find</a>
+            <a class="btn-sm btn-success" href="/addcustomer">Add Customer</a>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">City</th>
+                        <th scope="col">Zip</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model)
+                    {
+                        <tr>
+                            <th scope="row"><a href="viewcustomer/@c.Id">@c.Id</a></th>
+                            <td>@c.FirstName</td>
+                            <td>@c.LastName</td>
+                            <td>@c.Address</td>
+                            <td>@c.City</td>
+                            <td>@c.Zip</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>

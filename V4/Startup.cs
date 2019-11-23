@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using V4.Models.DataModels;
+using V4.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace V4
@@ -26,6 +26,7 @@ namespace V4
         public void ConfigureServices(IServiceCollection services)
         {
             string mySqlConnection = "server=localhost;userid=root;password=root;port=3306;database=servicemarginV4;SslMode=None";
+            
             services.AddDbContext<v4Context>(options => options.UseMySql(mySqlConnection));
 
             services.AddSession();

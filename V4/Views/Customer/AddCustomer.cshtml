@@ -1,0 +1,42 @@
+﻿@model CustomerForm
+<div class="row">
+    <partial name="_NavLeft" />
+    <div class="col-10 border">
+        <div class="col-5">
+            <h3>Enter New Customer</h3>
+            <form asp-action="PostNewCustomer" asp-controller="Customer" method="post">
+                <div class="form-row">
+                    <div class="col">
+                        <span asp-validation-for="FirstName"></span>
+                        <input asp-for="FirstName" class="form-control" placeholder="First Name">
+                    </div>
+                    <div class="col">
+                        <span asp-validation-for="LastName"></span>
+                        <input asp-for="LastName" class="form-control" placeholder="Last Name">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <span asp-validation-for="Address"></span>
+                        <input asp-for="Address" class="form-control" placeholder="Address">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <span asp-validation-for="City"></span>
+                        <input asp-for="City" class="form-control" placeholder="City">
+                    </div>
+                    <div class="col-2">
+                        <span asp-validation-for="State"></span>
+                        <input asp-for="State" class="form-control" value="WA">
+                    </div>
+                    <div class="col">
+                        <span asp-validation-for="Zip"></span>
+                        <input asp-for="Zip" class="form-control" placeholder="Zip">
+                    </div>
+                </div>
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+</div>

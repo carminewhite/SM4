@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using V4.Models.DataModels;
+using V4.Models;
+
 
 namespace V4.Controllers
 {
