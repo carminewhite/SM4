@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using V4.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace V4
 {
@@ -25,6 +26,10 @@ namespace V4
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //add this to fix the encoding problem with asp.net core 2.0:
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+
             string mySqlConnection = "server=localhost;userid=root;password=root;port=3306;database=servicemarginV4;SslMode=None";
             
             services.AddDbContext<v4Context>(options => options.UseMySql(mySqlConnection));

@@ -19,5 +19,6 @@ namespace V4.Models
 
         // Foreign Keys
         public int CompanyId { get; set; }
+        public List<Job> CustomerJobs { get; set; }
     }
 }

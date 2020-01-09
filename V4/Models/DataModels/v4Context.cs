@@ -13,5 +13,6 @@ namespace V4.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Job> Jobs { get; set; }
     }
 }

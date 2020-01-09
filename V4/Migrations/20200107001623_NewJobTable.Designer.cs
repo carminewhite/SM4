@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using V4.Models;
 
 namespace V4.Migrations
 {
     [DbContext(typeof(v4Context))]
-    partial class v4ContextModelSnapshot : ModelSnapshot
+    [Migration("20200107001623_NewJobTable")]
+    partial class NewJobTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

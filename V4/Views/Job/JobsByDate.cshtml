@@ -1,0 +1,42 @@
+﻿@model List<Job>
+<div class="row">
+    <partial name="_NavLeft" />
+    <div class="col-10 border">
+        <h2>All jobs by date:</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Job ID</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Job Date</th>
+                    <th scope="col">Start</th>
+                    <th scope="col">End</th>
+                    <th scope="col">B. Hrs</th>
+                    <th scope="col">Act. Hrs</th>
+                    <th scope="col"># Workers</th>
+                    <th scope="col">Team</th>
+                    <th scope="col">Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var job in Model)
+                {
+
+                <tr>
+                    <td><a href="/">@job.JobId</a></td>
+                    <td><a href="/">@job.Cust.LastName, @job.Cust.FirstName</a></td>
+                    <td>@job.ScheduleDate</td>
+                    <td>@job.StartTime</td>
+                    <td>@job.EndTime</td>
+                    <td>@job.BudgetedHours</td>
+                    <td>@job.Hours</td>
+                    <td>@job.Men</td>
+                    <td>@job.AssignedTo</td>
+                    <td>@job.Amount</td>
+
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

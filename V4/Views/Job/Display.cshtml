@@ -1,0 +1,56 @@
+﻿<div class="row">
+    <partial name="_NavLeft" />
+    <div class="col-10 border">
+        @model ExistNewCustomersJobsViewModel
+
+        <h2>Existing Customers in DB</h2>
+        <form>
+            @foreach (var c in Model.ExistingCustomers)
+            {
+                <div class="form-row">
+                    <div class="col">
+                        <input class="form-control" value="@c.FirstName" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" value="@c.LastName" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" value="@c.Address" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" value="@c.City" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" value="@c.Zip" />
+                    </div>
+                </div>
+            }
+
+            <h2>New Customers to Add</h2>
+
+            @foreach (var c in Model.NewCustomers)
+            {
+                <div class="form-row">
+                    <div class="col">
+                        <input class="form-control" value="@c.FirstName" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" value="@c.LastName" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" value="@c.Address" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" value="@c.City" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" value="@c.Zip" />
+                    </div>
+                </div>
+            }
+
+        </form>
+
+
+    </div>
+</div>
