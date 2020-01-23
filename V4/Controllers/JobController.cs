@@ -13,8 +13,23 @@ using V4.Models;
 
 namespace V4.Controllers
 {
+    public static class DateTimeExtensions
+    {
+        //Convert datetimes to a date we can send through a get route
+        public static string ToYMD(this DateTime theDate)
+        {
+            return theDate.ToString("yyyy-MM-dd");
+        }
+
+        public static string ToYMD(this DateTime? theDate)
+        {
+            return theDate.HasValue ? theDate.Value.ToYMD() : string.Empty;
+        }
+    }
+
     public class JobController : Controller
     {
+ 
         private readonly v4Context dbContext;
 
         // here we can "inject" our context service into the constructor
@@ -28,10 +43,14 @@ namespace V4.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            Console.WriteLine();
-            Console.WriteLine("On Job Route");
-            Console.WriteLine();
+            //upload route.  Probably should rename?
             return View("Upload");
+        }
+
+        [HttpGet("jobs-by-date")]
+        public IActionResult Jobs()
+        {
+            return View("Jobs");
         }
 
         [HttpPost]
@@ -185,13 +204,14 @@ namespace V4.Controllers
                     //send both lists to the View --- NOT USING THIS ANYMORE RIGHT NOW
                     var ExistNewCustomers = new ExistNewCustomersJobsViewModel { ExistingCustomers = existingCustomersList, NewCustomers = newCustomerList };
                     // pick the most recent job date, and send to the jobs/jobdate route with the parameter of the most recently uploaded job
+                    var lastjobdate = dbContext.Jobs
+                                      .OrderByDescending(p => p.JobId)
+                                      .FirstOrDefault();
+
+                    var lastjobdateString = lastjobdate.ScheduleDate.ToYMD();
 
 
-                    //convert string date in this object to a datetime format
-                    //double date2 = double.Parse(jobdate);
-                    //var dateTime2 = DateTime.FromOADate(date2).ToString("MM-dd-yyyy");
-                    //jobdate = dateTime2;
-                    return RedirectToAction("JobsByDate"/*, new { jobdate }*/);
+                    return RedirectToAction("JobsByDate", new { startjobdate = lastjobdateString, endjobdate = lastjobdateString });
                 }
             }
             else
@@ -201,156 +221,28 @@ namespace V4.Controllers
             return View();
         }
 
-
-        [Route("jobs/test")]
-        [HttpGet]
-        public ActionResult JobsByDate()
+        [HttpPost("jobsdaterange")]
+        public IActionResult DateRangePost(string startDate, string endDate)
         {
-            var lastjobdate = dbContext.Jobs
-                  .OrderByDescending(p => p.JobId)
-                  .FirstOrDefault();
-
-            string correctDate = DateTime.ParseExact(lastjobdate.ScheduleDate, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-            String.Format("{0:yyyy-MM-dd}", correctDate);
-            Console.WriteLine("*************************************");
-            Console.WriteLine($"Last Job Date: {lastjobdate.JobId}, Date: {lastjobdate.ScheduleDate}");
-            Console.WriteLine($"Last job date in String format: {correctDate}");
-            Console.WriteLine("*************************************");
-
-
-
-            //DateTime oDate = DateTime.P(jobdate);
-            //List<Job> AllJobsByDate = dbContext.Jobs
-            //                            .Where(j => j.ScheduleDate == oDate)
-            //                            .Include(c => c.Cust)
-            //                            .OrderBy(c => c.Cust.LastName)
-            //                            .ToList();
-
-
-
-            return View("Upload");
+            return RedirectToAction("JobsByDate", new { startjobdate = startDate, endjobdate = endDate });
         }
 
+        [Route("jobs/{startjobdate}/{endjobdate}")]
+        [HttpGet]
+        public ActionResult JobsByDate(string startjobdate, string endjobdate)
+        {
 
-     
+            DateTime sDate = DateTime.Parse(startjobdate);
+            DateTime eDate = DateTime.Parse(endjobdate);
+            List<Job> AllJobsByDate = dbContext.Jobs
+                                        .Where(j => j.ScheduleDate >= sDate && j.ScheduleDate <= eDate)
+                                        .Include(c => c.Cust)
+                                        .OrderByDescending(j => j.ScheduleDate)
+                                        .ThenBy(j => j.AssignedTo)
+                                        .ThenBy(j => j.JobId)
+                                        .ToList();
 
-
-        //[HttpPost("customer/create")]
-        //public IActionResult PostNewCustomer(CustomerForm form)
-        //{
-        //    return RedirectToAction()
-        //}
-
-        //[HttpPost("import")]
-        //public async Task<DemoResponse<List<UserInfo>>> Import(IFormFile formFile, CancellationToken cancellationToken)
-        //{
-        //    if (formFile != null || formFile.Length > 0)
-        //    {
-
-
-        //        Stream stream = formFile.OpenReadStream();
-        //        IExcelDataReader reader = null;
-
-        //        if (Path.GetExtension(formFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
-        //        {
-        //            //return DemoResponse<List<UserInfo>>.GetResult(-1, "Not Support file extension");
-        //            reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-        //        }
-        //        else if (Path.GetExtension(formFile.FileName).Equals(".xls", StringComparison.OrdinalIgnoreCase))
-        //        {
-        //            reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-        //        }
-        //        else
-        //        {
-        //            return DemoResponse<List<UserInfo>>.GetResult(-1, "This file format is not supported");
-        //        }
-
-        //        reader.IsFirstRowAsColumnNames = true;
-        //        var list = new List<UserInfo>();
-        //        List<Job> listJobs = new List<Job>();
-
-
-        //        // *************** this only works for xlsx files.  Need one for xls files *****************************
-        //        using (var stream = new MemoryStream())
-        //        {
-        //            await formFile.CopyToAsync(stream, cancellationToken);
-
-        //            using (var package = new ExcelPackage(stream))
-        //            {
-        //                ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
-        //                var rowCount = worksheet.Dimension.Rows;
-
-        //                for (int row = 2; row <= rowCount; row++)
-        //                {
-        //                    Job j = new Job
-        //                    {
-        //                        ClientFirstName = worksheet.Cells[row, 2].Value.ToString().Trim(),
-        //                        ClientLastName = worksheet.Cells[row, 3].Value.ToString().Trim(),
-        //                        ClientAddressLine1 = worksheet.Cells[row, 4].Value.ToString().Trim(),
-        //                        ClientCity = worksheet.Cells[row, 5].Value.ToString().Trim(),
-        //                        ClientZIP = int.Parse(worksheet.Cells[row, 6].Value.ToString().Trim()),
-        //                        ClientSince = worksheet.Cells[row, 8].Value.ToString().Trim(),
-        //                        ScheduleDate = worksheet.Cells[row, 13].Value.ToString().Trim(),
-        //                        StartTime = worksheet.Cells[row, 14].Value.ToString().Trim(),
-        //                        EndTime = worksheet.Cells[row, 15].Value.ToString().Trim(),
-        //                        Men = int.Parse(worksheet.Cells[row, 16].Value.ToString().Trim()),
-        //                        AppStartTime = worksheet.Cells[row, 17].Value.ToString().Trim(),
-        //                        AppEndTime = worksheet.Cells[row, 18].Value.ToString().Trim(),
-        //                        BudgetedHours = decimal.Parse(worksheet.Cells[row, 19].Value.ToString().Trim()),
-        //                        ScheduleStatus = worksheet.Cells[row, 21].Value.ToString().Trim(),
-        //                        ServiceAddressLine1 = worksheet.Cells[row, 25].Value.ToString().Trim(),
-        //                        ServiceCity = worksheet.Cells[row, 26].Value.ToString().Trim(),
-        //                        ServiceZIP = int.Parse(worksheet.Cells[row, 27].Value.ToString().Trim()),
-        //                        AssignedTo = worksheet.Cells[row, 28].Value.ToString().Trim(),
-        //                        Hours = decimal.Parse(worksheet.Cells[row, 29].Value.ToString().Trim()),
-        //                        Quantity = decimal.Parse(worksheet.Cells[row, 30].Value.ToString().Trim()),
-        //                        Rate = decimal.Parse(worksheet.Cells[row, 31].Value.ToString().Trim()),
-        //                        Amount = decimal.Parse(worksheet.Cells[row, 32].Value.ToString().Trim()),
-        //                        RouteNotes = worksheet.Cells[row, 33].Value.ToString().Trim()
-        //                    };
-        //                    listJobs.Add(j);
-        //                }
-        //            }
-
-        //        }
-
-        //        var counter = 1;
-        //        foreach (var jobs in listJobs)
-        //        {
-        //            Console.WriteLine($"{counter}: {jobs.ClientFirstName} {jobs.ClientLastName} - {jobs.ScheduleDate}");
-        //            counter++;
-        //        }
-        //        //*********************************   test list *********************************
-        //        //var list = new List<UserInfo>();
-
-        //        //using (var stream = new MemoryStream())
-        //        //{
-        //        //    await formFile.CopyToAsync(stream, cancellationToken);
-
-        //        //    using (var package = new ExcelPackage(stream))
-        //        //    {
-        //        //        ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
-        //        //        var rowCount = worksheet.Dimension.Rows;
-
-        //        //        for (int row = 2; row <= rowCount; row++)
-        //        //        {
-        //        //            list.Add(new UserInfo
-        //        //            {
-        //        //                UserName = worksheet.Cells[row, 1].Value.ToString().Trim(),
-        //        //                Age = int.Parse(worksheet.Cells[row, 2].Value.ToString().Trim()),
-        //        //            });
-        //        //        }
-        //        //    }
-        //        //}
-        //        //*********************************   test list *********************************
-
-        //        // add list to db ..  
-        //        // here just read and return  
-
-        //        return DemoResponse<List<UserInfo>>.GetResult(0, "OK", list);
-        //    }
-        //}
-
-
+            return View("JobsByDate", AllJobsByDate);
+        }
     }
 }

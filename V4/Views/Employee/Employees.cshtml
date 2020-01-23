@@ -1,0 +1,28 @@
+﻿@model List<Employee>
+<div class="row">
+    <partial name="_NavLeft" />
+    <div class="col-10 border">
+        <h3 class="mt-4">Employee List</h3>
+        <a href="/" class="btn btn-primary">Update Employees from T-Sheets</a>
+
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">Employee ID</th>
+                    <th scope="col">Employee</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var emp in Model)
+                {
+                    <tr>
+                        <td><a href="/">@emp.Id</a></td>
+                        <td><a href="/">@emp.First_Name @emp.Last_Name</a></td>
+                        <td>@emp.Active</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

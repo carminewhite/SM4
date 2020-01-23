@@ -1,11 +1,11 @@
-﻿@model Customer
+﻿@model CustomersJobsViewModel
 <div class="row">
     <partial name="_NavLeft" />
     <div class="col-10 border p-3">
         <div class="row">
 
             <div class="col-6 mt-4">
-                <h3>@Model.FirstName @Model.LastName</h3>
+                <h3>@model</h3>
                 <p>
                     @Model.Address<br>
                 @Model.City, @Model.State, @Model.Zip

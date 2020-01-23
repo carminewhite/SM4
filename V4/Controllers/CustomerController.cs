@@ -63,6 +63,12 @@ namespace V4.Controllers
             Customer thisCustomer = dbContext.Customers
                 .Where(c => c.Id == id)
                 .FirstOrDefault();
+
+            List<Job> jobsForThisCustomer = dbContext.Jobs
+                .Where(j => j.CustomerId == thisCustomer.Id)
+                .ToList();
+
+            //CustomersJobsViewModel custAndJobs = 
             return View(thisCustomer);
         }
 

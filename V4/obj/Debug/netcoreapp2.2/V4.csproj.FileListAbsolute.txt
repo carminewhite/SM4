@@ -25,10 +25,13 @@ C:\Users\Carmine White\Desktop\SM\V4\V4\bin\Debug\netcoreapp2.2\Properties\launc
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Customer\AddCustomer.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Customer\Customers.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Customer\ViewCustomer.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Employee\Employees.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Employee\Timecards.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Home\Manual.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\Display.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\Jobs.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\JobsByDate.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\Upload.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Shared\Error.cshtml.g.cs

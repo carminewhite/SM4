@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using V4.Models;
 
 namespace V4.Migrations
 {
     [DbContext(typeof(v4Context))]
-    partial class v4ContextModelSnapshot : ModelSnapshot
+    [Migration("20200122201613_EmployeesModel")]
+    partial class EmployeesModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,34 +73,6 @@ namespace V4.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("V4.Models.Employee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Active");
-
-                    b.Property<int>("CompanyID");
-
-                    b.Property<DateTime>("CreatedAt");
-
-                    b.Property<string>("DefaultTeam");
-
-                    b.Property<string>("First_Name");
-
-                    b.Property<string>("Last_Name");
-
-                    b.Property<DateTime>("UpdatedAt");
-
-                    b.Property<string>("Username");
-
-                    b.Property<decimal>("Wage");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("V4.Models.Job", b =>
