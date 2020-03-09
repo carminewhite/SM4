@@ -84,11 +84,13 @@ namespace V4.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<string>("DefaultTeam");
+                    b.Property<int>("DefaultTeam");
 
                     b.Property<string>("First_Name");
 
                     b.Property<string>("Last_Name");
+
+                    b.Property<int?>("TeamId");
 
                     b.Property<DateTime>("UpdatedAt");
 
@@ -97,6 +99,8 @@ namespace V4.Migrations
                     b.Property<decimal>("Wage");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Employees");
                 });
@@ -111,8 +115,6 @@ namespace V4.Migrations
                     b.Property<string>("AppEndTime");
 
                     b.Property<string>("AppStartTime");
-
-                    b.Property<string>("AssignedTo");
 
                     b.Property<decimal>("BudgetedHours");
 
@@ -140,13 +142,81 @@ namespace V4.Migrations
 
                     b.Property<string>("StartTime");
 
+                    b.Property<int>("TeamId");
+
+                    b.Property<int>("TeamMemberId1");
+
+                    b.Property<int>("TeamMemberId2");
+
+                    b.Property<int>("TeamMemberId3");
+
+                    b.Property<int>("TeamMemberId4");
+
                     b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("JobId");
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("TeamId");
+
                     b.ToTable("Jobs");
+                });
+
+            modelBuilder.Entity("V4.Models.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Active");
+
+                    b.Property<int>("CompanyID");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("DefaultTeamMember1Id");
+
+                    b.Property<int>("DefaultTeamMember2Id");
+
+                    b.Property<int>("DefaultTeamMember3Id");
+
+                    b.Property<int>("DefaultTeamMember4Id");
+
+                    b.Property<string>("TeamName");
+
+                    b.Property<DateTime>("UpdatedAt");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("V4.Models.TeamAssignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("AssignedDate");
+
+                    b.Property<bool>("AssignmentCompleted");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("EmpId1");
+
+                    b.Property<int>("EmpId2");
+
+                    b.Property<int>("EmpId3");
+
+                    b.Property<int>("EmpId4");
+
+                    b.Property<int>("TeamId");
+
+                    b.Property<DateTime>("UpdatedAt");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TeamAssignments");
                 });
 
             modelBuilder.Entity("V4.Models.User", b =>
@@ -175,11 +245,23 @@ namespace V4.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("V4.Models.Employee", b =>
+                {
+                    b.HasOne("V4.Models.Team")
+                        .WithMany("TeamEmployees")
+                        .HasForeignKey("TeamId");
+                });
+
             modelBuilder.Entity("V4.Models.Job", b =>
                 {
                     b.HasOne("V4.Models.Customer", "Cust")
                         .WithMany("CustomerJobs")
                         .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("V4.Models.Team", "Tm")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

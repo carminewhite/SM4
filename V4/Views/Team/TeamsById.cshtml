@@ -1,0 +1,38 @@
+﻿@model Team
+<div class="row">
+    <partial name="_NavLeft" />
+    <div class="col-10 border">
+        <h3 class="mt-4">Team x</h3>
+        <hr />
+
+        <table class="table table-striped col-8">
+            <thead>
+                <tr>
+                    <th scope="col">Team Name</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @*@foreach (var team in Model)
+                {
+                    <tr>
+                        @if (team.Active == true)
+                        {
+                            <td>@team.TeamName</td>
+                            <td>Active</td>
+                            <td><a href="/">Edit</a> <a class="pl-2" href="">Deactivate</a></td>
+                        }
+                        else
+                        {
+                            <td>@team.TeamName</td>
+                            <td>Inactive</td>
+                            <td><a href="/">Edit</a> <a class="pl-2" href="">Activate</a></td>
+                        }
+                    </tr>
+                }*@
+            </tbody>
+        </table>
+    </div>
+</div>

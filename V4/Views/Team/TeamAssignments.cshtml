@@ -1,0 +1,267 @@
+﻿@model JobTeamViewModel
+    <div class="row">
+
+        <partial name="_NavLeft" />
+        <div class="col-10 border">
+            <h3 class="mt-4">Teams Assignments</h3>
+            <div id="teamDate" class="col-3">
+                <span></span>
+                <form method="post" action="/teamassignmentsdate" id="teamsdateform">
+                    <input type="hidden" id="teamDate" name="teamDate" />
+                </form>
+            </div>
+
+            <hr />
+            @if (Model.Jobs.Count != 0)
+            {
+
+
+                var todayShort = Model.Jobs.First().ScheduleDate.ToShortDateString();
+                var todayLong = Model.Jobs.First().ScheduleDate.ToLongDateString();
+                DateTime todayDT = Model.Jobs.First().ScheduleDate;
+
+                <h3>@todayLong</h3>
+                @foreach (var team in Model.Teams)
+                {
+        <div class="mt-2 col-3 border rounded p-3 d-inline-block">
+            @{
+                var assignedTeam = Model.Assignments.FirstOrDefault(a => a.TeamId == team.Id);
+
+                var assignmentExists = Model.Assignments.Any(a => a.TeamId == team.Id);
+                if (assignmentExists)
+                {
+                    <p class="text-success text-sm-left">Assigned</p>
+                }
+                else
+                {
+                    <p class="text-danger text-sm-left">Not Assigned</p>
+                }
+            }
+            <h4 class="mt-4 d-inline">@team.TeamName</h4>
+            @* save for later... with ajax below *@
+            @*<div>
+                <a id="@team.Id" href="javascript:;" class="d-inline-block text-sm-right">Save as Default Team</a>
+            </div>*@
+
+            <form action="/save-team-assignment" method="post" id="form-@team.Id">
+                <input type="hidden" value="@team.Id" id="TeamId" name="TeamId" />
+                <input type="hidden" value="@todayDT" id="AssignedDate" name="AssignedDate" />
+                <input type="hidden" value="true" id="AssignmentCompleted" name="AssignmentCompleted" />
+                <div class="form-group">
+                    <select class="form-control mt-1" id="EmpId1" name="EmpId1">
+                        @{
+                            if (assignmentExists)
+                            {
+                                Employee assignedEmp1 = Model.Employees.FirstOrDefault(u => u.Id == assignedTeam.EmpId1);
+                                if (assignedEmp1 != null)
+                                {
+                                    <option value="@assignedEmp1.Id">@assignedEmp1.First_Name @assignedEmp1.Last_Name</option>
+                                    <option> ----------------- </option>
+                                    <option value="1"> -- Previous worker -- </option>
+                                }
+                                else
+                                {
+                                    if (assignedTeam.EmpId1 == 1)
+                                    {
+                                        <option value="1"> ** Previous worker ** </option>
+                                        <option> ----------------- </option>
+                                        <option> -- Select a worker --</option>
+                                    }
+                                    else
+                                    {
+                                        <option> -- Select a worker --</option>
+                                        <option> ----------------- </option>
+                                        <option value="1"> -- Previous worker -- </option>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // if assigned = false
+                                var default1 = Model.Employees.FirstOrDefault(u => u.Id == team.DefaultTeamMember1Id);
+                                if (default1 != null)
+                                {
+                                    <option value="@default1.Id">@default1.First_Name @default1.Last_Name</option>
+                                    <option> ----------------- </option>
+                                    <option value="1"> -- Previous worker -- </option>
+                                }
+                                else
+                                {
+                                    <option> -- Select a worker --</option>
+                                    <option> ----------------- </option>
+                                    <option value="1"> -- Previous worker -- </option>
+                                }
+                            }
+
+                            foreach (var employee in Model.Employees)
+                            {
+                                <option value="@employee.Id">@employee.First_Name @employee.Last_Name</option>
+                            }
+                        }
+                    </select>
+                    <select class="form-control mt-1" id="EmpId2" name="EmpId2">
+                        @{
+                            if (assignmentExists)
+                            {
+                                Employee assignedEmp2 = Model.Employees.FirstOrDefault(u => u.Id == assignedTeam.EmpId2);
+                                if (assignedEmp2 != null)
+                                {
+                                    <option value="@assignedEmp2.Id">@assignedEmp2.First_Name @assignedEmp2.Last_Name</option>
+                                    <option> ----------------- </option>
+                                    <option value="1"> -- Previous worker -- </option>
+                                }
+                                else
+                                {
+                                    if (assignedTeam.EmpId2 == 1)
+                                    {
+                                        <option value="1"> ** Previous worker ** </option>
+                                        <option> ----------------- </option>
+                                        <option> -- Select a worker --</option>
+                                    }
+                                    else
+                                    {
+                                        <option> -- Select a worker --</option>
+                                        <option> ----------------- </option>
+                                        <option value="1"> -- Previous worker -- </option>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // if assigned = false
+                                var default2 = Model.Employees.FirstOrDefault(u => u.Id == team.DefaultTeamMember2Id);
+                                if (default2 != null)
+                                {
+                                    <option value="@default2.Id">@default2.First_Name @default2.Last_Name</option>
+                                    <option> ----------------- </option>
+                                    <option value="1"> -- Previous worker -- </option>
+                                }
+                                else
+                                {
+                                    <option> -- Select a worker --</option>
+                                    <option> ----------------- </option>
+                                    <option value="1"> -- Previous worker -- </option>
+                                }
+                            }
+
+                            foreach (var employee in Model.Employees)
+                            {
+                                <option value="@employee.Id">@employee.First_Name @employee.Last_Name</option>
+                            }
+                        }
+                    </select>
+                    <select class="form-control mt-1" id="EmpId3" name="EmpId3">
+                        @{
+                            if (assignmentExists)
+                            {
+                                Employee assignedEmp3 = Model.Employees.FirstOrDefault(u => u.Id == assignedTeam.EmpId3);
+                                if (assignedEmp3 != null)
+                                {
+                                    <option value="@assignedEmp3.Id">@assignedEmp3.First_Name @assignedEmp3.Last_Name</option>
+                                    <option> ----------------- </option>
+                                    <option value="1"> -- Previous worker -- </option>
+                                }
+                                else
+                                {
+                                    if (assignedTeam.EmpId3 == 1)
+                                    {
+                                        <option value="1"> ** Previous worker ** </option>
+                                        <option> ----------------- </option>
+                                        <option> -- Select a worker --</option>
+                                    }
+                                    else
+                                    {
+                                        <option> -- Select a worker --</option>
+                                        <option> ----------------- </option>
+                                        <option value="1"> -- Previous worker -- </option>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // if assigned = false
+                                var default3 = Model.Employees.FirstOrDefault(u => u.Id == team.DefaultTeamMember3Id);
+                                if (default3 != null)
+                                {
+                                    <option value="@default3.Id">@default3.First_Name @default3.Last_Name</option>
+                                    <option> ----------------- </option>
+                                    <option value="1"> -- Previous worker -- </option>
+                                }
+                                else
+                                {
+                                    <option> -- Select a worker --</option>
+                                    <option> ----------------- </option>
+                                    <option value="1"> -- Previous worker -- </option>
+                                }
+                            }
+
+                            foreach (var employee in Model.Employees)
+                            {
+                                <option value="@employee.Id">@employee.First_Name @employee.Last_Name</option>
+                            }
+                        }
+                    </select>
+                    @*<a id="SaveDefaultTeam-@team.Id"href="/" class="mt-2 btn btn-sm btn-secondary text-right">Save as Default</a>*@<br />
+                    <input type="submit" id="command1" class="btn btn-sm btn-primary" value="Save Today Only" name="command" />
+                    <input type="submit" id="command2" class="mt-1 btn btn-sm btn-secondary" value="Save (and future)" name="command" />
+                </div>
+            </form>
+        </div>
+                }
+            }
+            else
+            {
+                <h3>No Jobs imported yet for this date</h3>
+                <p><a href="/job">Import</a> some jobs for today before you can assign them</p>
+            }
+        </div>
+    </div>
+<script>
+    $(function () {
+        $('#teamDate span').html("<input type='text' id='datepicker' placeholder='Select a date...'>");
+        $("#datepicker").datepicker({
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm-dd',
+            onSelect: function (dateText, inst) {
+
+                var dateObject = $(this).val();
+
+                $('input#teamDate').val(dateObject);
+                $('#teamsdateform').submit();
+
+
+                console.log(dateObject);
+            }
+        });
+
+        //*****not working.  Was trying to save without refreshing page.  fix later ****
+        //$("a").click(function (event) {
+        //    var thisId = event.target.id;
+        //    console.log(thisId);
+        //    $("#form-" + thisId).submit(function () {
+        //        $.ajax({
+        //            type: "POST",
+        //            url: "/save-default-team-assignment",
+        //            dataType: "json",
+        //            data: {
+        //                TeamId: 1,
+        //                EmpId1: 2,
+        //                EmpId2: 3,
+        //                EmpId3: 4
+        //            },
+        //            success: function (result) {
+        //                alert("success");
+        //            },
+        //            error: function (result) {
+        //                alert("failed");
+        //            }
+        //        })
+        //        return false;
+        //    }) 
+
+       
+        //});
+    });
+</script>

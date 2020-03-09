@@ -1,0 +1,37 @@
+﻿<div class="row">
+
+    <partial name="_NavLeft" />
+    <div class="col-10 border">
+        <h3 class="mt-4">Teams Assignments</h3>
+        <div id="teamDate" class="col-3">
+            <span></span>
+            <form method="post" action="/teamassignmentsdate" id="teamsdateform">
+                <input type="hidden" id="teamDate" name="teamDate" />
+            </form>
+        </div>
+
+        <hr />
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#teamDate span').html("<input type='text' id='datepicker' placeholder='Select a date...'>");
+        $("#datepicker").datepicker({
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm-dd',
+            onSelect: function (dateText, inst) {
+
+                var dateObject = $(this).val();
+
+                $('input#teamDate').val(dateObject);
+                $('#teamsdateform').submit();
+
+
+                console.log(dateObject);
+            }
+        });
+    });
+</script>

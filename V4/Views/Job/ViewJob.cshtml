@@ -1,0 +1,20 @@
+﻿@model Job
+<div class="row">
+    <partial name="_NavLeft" />
+    <div class="col-10 border p-3">
+        <div class="row">
+
+            <div class="col-6 mt-4">
+                <h3>@Model.Cust.FirstName @Model.Cust.LastName</h3>
+                <p>@Model.Cust.Address<br />
+                @Model.Cust.City, WA @Model.Cust.Zip</p>
+            </div>
+            <div class="col-12 mt-2">
+                <hr />
+                <p>Job# @Model.JobId:</p>
+                <p class="pl-2">@Model.ScheduleDate.ToLongDateString()</p>
+                <p class="pl-2">@Model.Tm.TeamName</p>
+            </div>
+        </div>
+    </div>
+</div>

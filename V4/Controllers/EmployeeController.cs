@@ -60,8 +60,7 @@ namespace V4.Controllers
         [HttpGet("update-employees")]
         public IActionResult UpdateEmployees()
         {
-            var client_users = new RestClient("https://rest.tsheets.com/api/v1/users");
-
+            var client_users = new RestClient("https://rest.tsheets.com/api/v1/users?active=true");
             var request = new RestRequest(Method.GET);
             request.AddHeader("Authorization", "Bearer S.6__d9462a3c90a589188cb6b4f9b14fef4adb5b75f9");
             IRestResponse user_response = client_users.Execute(request);
@@ -92,8 +91,9 @@ namespace V4.Controllers
             //_clientSecret = Environment.GetEnvironmentVariable("95f8c0ba8de747228dc9e3723e94dac9");
             //_manualToken = Environment.GetEnvironmentVariable("S.6__f722ed789e07d6dab956b322e86be7a34836991e");
 
+            //int clientPage = 5;
 
-            var client = new RestClient("https://rest.tsheets.com/api/v1/timesheets?start_date=2019-09-24&end_date=2019-09-25&page=2");
+            var client = new RestClient($"https://rest.tsheets.com/api/v1/timesheets?start_date=2019-09-24&end_date=2019-09-25&page=1");
             var client_users = new RestClient("https://rest.tsheets.com/api/v1/users");
 
             var request = new RestRequest(Method.GET);

@@ -14,9 +14,13 @@ namespace V4.Models
         public string Last_Name { get; set; }
         public string Username { get; set; }
         public decimal Wage { get; set; }
-        public string DefaultTeam { get; set; }
+        public int DefaultTeam { get; set; }
         public bool Active { get; set; }
+
+        //Foreign keys
         public int CompanyID { get; set; }
+
+
 
     }
 }

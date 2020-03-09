@@ -5,11 +5,11 @@
         <div class="row">
 
             <div class="col-6 mt-4">
-                <h3>@model</h3>
+                <h3>@Model.cjvmCustomer.FirstName @Model.cjvmCustomer.LastName</h3>
                 <p>
-                    @Model.Address<br>
-                @Model.City, @Model.State, @Model.Zip
-            </p>
+                    @Model.cjvmCustomer.Address<br>
+                    @Model.cjvmCustomer.City, @Model.cjvmCustomer.State @Model.cjvmCustomer.Zip
+                </p>
         </div>
         <div class="col-6 mt-4">
             <p>Monthly Recurring Revenue: $147</p>
@@ -30,9 +30,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <!-- Placeholder -->
-            </tr>
+
+            @foreach (var j in Model.cjvmJobs)
+            {
+                <tr>
+                    <td><a href="/viewjob/@j.JobId">@j.JobId</a></td>
+                    <td>@j.ScheduleDate.ToShortDateString()</td>
+                    <td>@j.TeamId</td>
+                    <td>@j.Amount</td>
+                    <td>cost</td>
+                    <td>gross profit</td>
+                    <td>GPM</td>
+                </tr>
+
+            }
 
         </tbody>
     </table>

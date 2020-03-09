@@ -7,7 +7,7 @@ namespace V4.Models
 {
     public class CustomersJobsViewModel
     {
-        List<Job> Jobs { get; set; }
-        Customer Customer { get; set; }
+        public List<Job> cjvmJobs { get; set; }
+        public Customer cjvmCustomer { get; set; }
     }
 }

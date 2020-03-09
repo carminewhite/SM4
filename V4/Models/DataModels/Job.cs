@@ -22,7 +22,13 @@ namespace V4.Models
         public string AppEndTime { get; set; }
         public decimal BudgetedHours { get; set; }
         public string ScheduleStatus { get; set; }
-        public string AssignedTo { get; set; }
+        public int TeamId { get; set; }
+
+        public int TeamMemberId1 { get; set; }
+        public int TeamMemberId2 { get; set; }
+        public int TeamMemberId3 { get; set; }
+        public int TeamMemberId4 { get; set; }
+
         public decimal Hours { get; set; }
         public decimal Quantity { get; set; }
         public decimal Rate { get; set; }
@@ -31,5 +37,6 @@ namespace V4.Models
         // Foreign Keys
         public int CompanyId { get; set; }
         public Customer Cust { get; set; }
+        public Team Tm { get; set; }
     }
 }

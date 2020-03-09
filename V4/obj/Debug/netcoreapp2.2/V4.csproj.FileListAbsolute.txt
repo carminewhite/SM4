@@ -34,10 +34,15 @@ C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\Jobs.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\JobsByDate.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\Upload.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\ViewJob.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_NavLeft.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Team\TeamAssignments.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Team\TeamAssignmentsMain.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Team\Teams.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Team\TeamsById.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\_ViewImports.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\_ViewStart.cshtml.g.cs

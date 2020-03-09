@@ -3,7 +3,7 @@
     <partial name="_NavLeft" />
     <div class="col-10 border">
         <h3 class="mt-4">Select Date to View Jobs:</h3>
-        <div id="reportrange" class="col-5" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+        <div id="reportrange" class="col-3" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
             <span></span>
             <form method="post" action="/jobsdaterange" id="jobsdateform">
                 <input type="hidden" id="start" name="startDate" />
@@ -31,15 +31,15 @@
                 {
 
                     <tr>
-                        <td><a href="/">@job.JobId</a></td>
-                        <td><a href="/">@job.Cust.LastName, @job.Cust.FirstName</a></td>
+                        <td><a href="/viewjob/@job.JobId">@job.JobId</a></td>
+                        <td><a href="/viewcustomer/@job.CustomerId">@job.Cust.LastName, @job.Cust.FirstName</a></td>
                         <td>@job.ScheduleDate.ToShortDateString()</td>
                         <td>@job.StartTime</td>
                         <td>@job.EndTime</td>
                         <td>@job.BudgetedHours</td>
                         <td>@job.Hours</td>
                         <td>@job.Men</td>
-                        <td>@job.AssignedTo</td>
+                        <td>@job.Tm.TeamName</td>
                         <td>@job.Amount</td>
 
                     </tr>
@@ -55,7 +55,7 @@
     var end = moment().subtract(1, 'days');
 
     function cb(start, end) {
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        $('#reportrange span').html("Select a date...");
     }
 
     $('#reportrange').daterangepicker({

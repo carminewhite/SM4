@@ -1,0 +1,76 @@
+﻿@model TeamEmployeeViewModel
+<div class="row">
+    <partial name="_NavLeft" />
+    <div class="col-10 border">
+        <h3 class="mt-4">Teams</h3>
+        <hr />
+
+        @foreach (var team in Model.Teams)
+        {
+    <div class="p-2 col-12 border border-light rounded m-1">
+        <div class="w-25 d-inline-block">
+            <h5 class="mb-4 ml-2 d-inline-block">@team.TeamName</h5>
+            <br />
+            <a href="" class="ml-4">Edit team</a>
+
+        </div>
+        <div class="w-50 d-inline-block">
+            @{
+                var emp1 = Model.Employees.FirstOrDefault(u => u.Id == team.DefaultTeamMember1Id);
+                if (emp1 != null)
+                {
+                    if (emp1.Id == 1)
+                    {
+                        <p class="d-inline-block mr-4 mt-3">Past employee</p>
+                    }
+                    else
+                    {
+                        <p class="d-inline-block mr-4 mt-3">@emp1.First_Name @emp1.Last_Name</p>
+                    }
+                }
+                else
+                {
+                    <p class="d-inline-block mr-4 mt-3">Unassigned</p>
+                }
+
+                var emp2 = Model.Employees.FirstOrDefault(u => u.Id == team.DefaultTeamMember2Id);
+                if (emp2 != null)
+                {
+                    if (emp2.Id == 1)
+                    {
+                        <p class="d-inline-block mr-4 mt-3">Past employee</p>
+                    }
+                    else
+                    {
+                        <p class="d-inline-block mr-4 mt-3">@emp2.First_Name @emp2.Last_Name</p>
+                    }
+                }
+                else
+                {
+                    <p class="d-inline-block mr-4 mt-3">Unassigned</p>
+                }
+
+                var emp3 = Model.Employees.FirstOrDefault(u => u.Id == team.DefaultTeamMember3Id);
+                if (emp3 != null)
+                {
+                    if (emp3.Id == 1)
+                    {
+                        <p class="d-inline-block mr-4 mt-3">Past employee</p>
+                    }
+                    else
+                    {
+                        <p class="d-inline-block mr-4 mt-3">@emp3.First_Name @emp3.Last_Name</p>
+                    }
+                }
+                else
+                {
+                    <p class="d-inline-block mr-4 mt-3">Unassigned</p>
+                }
+            }
+        </div>
+
+    </div>
+        }
+    </div>
+</div>
+

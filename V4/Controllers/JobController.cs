@@ -126,9 +126,29 @@ namespace V4.Controllers
                             Amount = decimal.Parse(worksheet.Rows[row][31].ToString().Trim()),
                             RouteNotes = worksheet.Rows[row][32].ToString().Trim()
                         };
-                        //convert date in this object to a "MM-dd-yyyy" string format
-                        //var dateTime = DateTime.FromOADate(date).ToString("MM-dd-yyyy");
-                        //j.ScheduleDate = dateTime;
+
+                        //query team name to see if the team already exists.  If it exists, assign the Assigned To to that team
+                        //if not then create the team, query the new team and then assign to that new team.
+                        int existingTeamId;
+                        Team existingTeam = dbContext.Teams.FirstOrDefault(t => t.TeamName == j.AssignedTo);
+                        if (existingTeam != null)
+                        {
+                            existingTeamId = existingTeam.Id;
+                        }
+                        else
+                        {
+                            Team newTeam = new Team
+                            {
+                                TeamName = j.AssignedTo,
+                                Active = true,
+                                CompanyID = 1
+                            };
+                            dbContext.Add(newTeam);
+                            dbContext.SaveChanges();
+
+                            Team justAddedTeam = dbContext.Teams.FirstOrDefault(t => t.TeamName == j.AssignedTo);
+                            existingTeamId = justAddedTeam.Id;
+                        }
 
                         //query customer where name and address are all the same as uploaded
                         Customer existingCustomer = dbContext.Customers.FirstOrDefault(c => c.FirstName == j.ClientFirstName && c.LastName == j.ClientLastName && c.Address == j.ClientAddressLine1);
@@ -148,7 +168,7 @@ namespace V4.Controllers
                                 AppEndTime = j.AppEndTime,
                                 BudgetedHours = j.BudgetedHours,
                                 ScheduleStatus = j.ScheduleStatus,
-                                AssignedTo = j.AssignedTo,
+                                TeamId = existingTeamId,
                                 Hours = j.Hours,
                                 Quantity = j.Quantity,
                                 Rate = j.Rate,
@@ -187,7 +207,7 @@ namespace V4.Controllers
                                 AppEndTime = j.AppEndTime,
                                 BudgetedHours = j.BudgetedHours,
                                 ScheduleStatus = j.ScheduleStatus,
-                                AssignedTo = j.AssignedTo,
+                                TeamId = existingTeamId,
                                 Hours = j.Hours,
                                 Quantity = j.Quantity,
                                 Rate = j.Rate,
@@ -237,12 +257,25 @@ namespace V4.Controllers
             List<Job> AllJobsByDate = dbContext.Jobs
                                         .Where(j => j.ScheduleDate >= sDate && j.ScheduleDate <= eDate)
                                         .Include(c => c.Cust)
+                                        .Include(t => t.Tm)
                                         .OrderByDescending(j => j.ScheduleDate)
-                                        .ThenBy(j => j.AssignedTo)
+                                        .ThenBy(t => t.Tm.TeamName)
                                         .ThenBy(j => j.JobId)
                                         .ToList();
 
             return View("JobsByDate", AllJobsByDate);
+        }
+
+        [HttpGet("viewjob/{id}")]
+        public IActionResult JobById(int id)
+        {
+            Job thisjob = dbContext.Jobs
+                        .Where(j => j.JobId == id)
+                        .Include(c => c.Cust)
+                        .Include(t => t.Tm)
+                        .FirstOrDefault();
+            Console.WriteLine($"Job#: {thisjob.JobId}, Name: {thisjob.Cust.FirstName}");
+            return View("ViewJob", thisjob);
         }
     }
 }
