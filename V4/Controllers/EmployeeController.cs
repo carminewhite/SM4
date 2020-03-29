@@ -48,21 +48,9 @@ namespace V4.Controllers
         [HttpGet("Employees")]
         public IActionResult Employees()
         {
-            //All employees in the database.  This must be manually refreshed to pull in tsheets employees
-            List<Employee> all_employees = dbContext.Employees
-                .Where(e => e.Active == true)
-                .OrderBy(e => e.First_Name)
-                .ToList();
-
-            return View(all_employees);
-        }
-
-        [HttpGet("update-employees")]
-        public IActionResult UpdateEmployees()
-        {
             var client_users = new RestClient("https://rest.tsheets.com/api/v1/users?active=true");
             var request = new RestRequest(Method.GET);
-            request.AddHeader("Authorization", "Bearer S.6__d9462a3c90a589188cb6b4f9b14fef4adb5b75f9");
+            request.AddHeader("Authorization", "Bearer S.6__bd323aa9097fa841b85b146575b7347f22e86eb8");
             IRestResponse user_response = client_users.Execute(request);
 
             //----deserialize JSON data and convert into a list:
@@ -72,20 +60,15 @@ namespace V4.Controllers
                 .Children()
                 .Select(c => c.ToObject<Employee>())
                 .ToList();
-            Console.WriteLine("****************************");
-            Console.WriteLine($"Count of Users: {all_users.Count}");
-            //foreach (var u in all_users)
-            //{
-            //    if (u.Id )
-            //}
-            Console.WriteLine("****************************");
-            return View("Employees", all_users);
+
+            return View(all_users);
         }
 
 
         [HttpGet("timecards")]
         public IActionResult Timecards()
         {
+
             //_clientId = Environment.GetEnvironmentVariable("99449a7d970345758aa06bb4b5c3de4c");
             //_redirectUri = Environment.GetEnvironmentVariable("http://localhost:5000/");
             //_clientSecret = Environment.GetEnvironmentVariable("95f8c0ba8de747228dc9e3723e94dac9");
@@ -97,7 +80,7 @@ namespace V4.Controllers
             var client_users = new RestClient("https://rest.tsheets.com/api/v1/users");
 
             var request = new RestRequest(Method.GET);
-            request.AddHeader("Authorization", "Bearer S.6__d9462a3c90a589188cb6b4f9b14fef4adb5b75f9");
+            request.AddHeader("Authorization", "Bearer S.6__bd323aa9097fa841b85b146575b7347f22e86eb8");
             IRestResponse response = client.Execute(request);
             IRestResponse user_response = client_users.Execute(request);
 

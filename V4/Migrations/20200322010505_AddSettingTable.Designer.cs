@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using V4.Models;
 
 namespace V4.Migrations
 {
     [DbContext(typeof(v4Context))]
-    partial class v4ContextModelSnapshot : ModelSnapshot
+    [Migration("20200322010505_AddSettingTable")]
+    partial class AddSettingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,24 +170,19 @@ namespace V4.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("Avg_Merch_Fees_percent")
-                        .HasColumnType("decimal(5, 2)");
+                    b.Property<decimal>("Avg_Merch_Fees_percent");
 
-                    b.Property<decimal>("Avg_Per_Job_Supply_Cost_amount")
-                        .HasColumnType("decimal(5, 2)");
+                    b.Property<decimal>("Avg_Per_Job_Supply_Cost_amount");
 
-                    b.Property<decimal>("Avg_Vehicle_Costs_percent")
-                        .HasColumnType("decimal(5, 2)");
+                    b.Property<decimal>("Avg_Vehicle_Costs_percent");
 
                     b.Property<int>("CompanyId");
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<decimal>("EE_payroll_burden_percent")
-                        .HasColumnType("decimal(5, 2)");
+                    b.Property<decimal>("EE_payroll_burden_percent");
 
-                    b.Property<decimal>("Misc_Additional_percent")
-                        .HasColumnType("decimal(5, 2)");
+                    b.Property<decimal>("Misc_Additional_percent");
 
                     b.Property<DateTime>("UpdatedAt");
 

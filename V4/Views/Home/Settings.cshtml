@@ -1,0 +1,43 @@
+﻿@model Setting
+    <div class="row">
+    <partial name="_NavLeft" />
+    <div class="col-10 border">
+        <form action="/save-company-settings" method="post">
+            <input type="hidden" name="CompanyId" value="1" />
+            <div class="p-3 mt-4">
+                <h3 class="d-inline">Custom Settings</h3>
+                <input class="btn btn-success float-right" type="submit" value="Save Settings" />
+            </div>
+            <div class="border rounded p-3">
+                <h5>Payroll Burden (percent)</h5>
+                <p>This is a multiplier that will be added to each wage expense, to get a true look at the cost per hour for each employee.  Run this calculation separately based</p>
+                <p class="ml-2"><i>Example:  Pull a wage report from payroll.  If your gross wages are $15,000, and the "Employer Cost" other than wages is $1,200, then your Payroll Burden is 8% (1,200 / 15,000)</i></p>
+                <p><input class="col-1 mx-sm-2 p-1 text-right" type="text" name="EE_payroll_burden_percent" value="@Model.EE_payroll_burden_percent"/>%</p>
+            </div>
+            <div class="mt-1 border rounded p-3">
+                <h5>Merchant Fees (percent)</h5>
+                <p>An estimate of how much in merchant fees per job.  This multiple is added to the charge of each job, to estimate how much in merchant fees each job is costing.  Even if this particular job paid by check/cash, this is still added as an average.</p>
+                <p class="ml-2"><i>Example:  Pull a P&L report.  Take your total merchant expense and divide by top-line revenue.  For example, if your monthly revenue is $100,000 and you paid $2,250 in merchant fees, your % per job is 2.25%</i></p>
+                <p><input class="col-1 mx-sm-2 p-1 text-right" type="text" name="Avg_Merch_Fees_percent" value="@Model.Avg_Merch_Fees_percent"/>%</p>
+            </div>
+            <div class="mt-1 border rounded p-3">
+                <h5>Vehicle expense (percent)</h5>
+                <p>An estimate of how much in vehicle costs per job.  This multiple is added to the charge of each job, to estimate how much in vehicle expense each job is costing.</p>
+                <p class="ml-2"><i>Example:  Pull a P&L report.  Take your total vehicle expense and divide by top-line revenue.  For example, if your monthly revenue is $100,000 and you paid $1,350 in vehicle expenses, your % per job is 1.35%</i></p>
+                <p><input class="col-1 mx-sm-2 p-1 text-right" type="text" name="Avg_Vehicle_Costs_percent" value="@Model.Avg_Vehicle_Costs_percent" />%</p>
+            </div>
+            <div class="mt-1 border rounded p-3">
+                <h5>Average Supplies Cost per Job (percent)</h5>
+                <p>An estimate of how much in supply costs per job.  This multiple is added to the charge of each job, to estimate how much in supply expense each job is costing.</p>
+                <p class="ml-2"><i>Example:  Pull a P&L report.  Take your total supplies expense and divide by top-line revenue.  For example, if your monthly revenue is $100,000 and you purchased $3,450 in supplies/chemicals, your % per job is 3.45%</i></p>
+                <p><input class="col-1 mx-sm-2 p-1 text-right" type="text" name="Avg_Per_Job_Supply_Cost_amount" value="@Model.Avg_Per_Job_Supply_Cost_amount"/>%</p>
+            </div>
+            <div class="mt-1 border rounded p-3">
+                <h5>Misc additional (percent)</h5>
+                <p>Add a modifier to each job expense, to factor in other items not listed here.</p>
+                <p class="ml-2"><i>Example:  Things not accounted above, like commission.  If average commission expense is 1%, add that here</i></p>
+                <p><input class="col-1 mx-sm-2 p-1 text-right" type="text" name="Misc_Additional_percent" value="@Model.Misc_Additional_percent" />%</p>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,144 @@
+﻿<div class="row">
+    <partial name="_NavLeft" />
+    <div class="col-10 border">
+        <h3 class="mt-4 mr-4 d-inline">All Teams By Date</h3>
+        <div id="allteamsDate" class="ml-4 mt-4 col-6 d-inline">
+            <span></span>
+            <form method="post" action="/rpt-allteams-day" id="rpt-allteams-day-form">
+                <input type="hidden" id="allteamsDateRPT" name="allteamsDateRPT" />
+            </form>
+            <hr />
+        </div>
+        <h5>All Teams - Wed, Mar 13 2020</h5>
+        <h5 class="bg-info p-3 text-white">Day Summary</h5>
+        <div class="p-3">
+            <div class="d-inline-block float-left ml-1 mt-3 mr-4">
+                <table>
+                    <tr>
+                        <td class="text-right p-1"><h4>Revenue:</h4></td>
+                        <td class="ml-3"><h4 class="ml-2">$750.25</h4></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1"><h4>Total Cost:</h4></td>
+                        <td><h4 class="ml-2">$430.60</h4></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1"><h4>Total Profit:</h4></td>
+                        <td><h4 class="ml-2">$319.65</h4></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1"><h4>GPM:</h4></td>
+                        <td><h4 class="ml-2">42.68%</h4></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="d-inline-block m-3 ml-4">
+                <table class="table-bordered">
+                    <tr>
+                        <td class="text-right p-1 pr-2"># of Jobs</td>
+                        <td class="px-3">4</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1 pr-2">Revenue</td>
+                        <td class="px-3">$750.25</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1 pr-2">Labor Costs</td>
+                        <td class="px-3">$375.25</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1 pr-2">Job Costs</td>
+                        <td class="px-3">$55.35</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1 pr-2">Day's Gross Profit</td>
+                        <td class="px-3">$319.65</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1 pr-2">GPM</td>
+                        <td class="px-3">42.68%</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="d-inline-block m-3">
+                <table class="table-bordered">
+                    <tr>
+                        <td class="text-right p-1 pr-2">Hrs budgeted</td>
+                        <td class="px-3">15.77 hrs</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1 pr-2">Hrs on Site</td>
+                        <td class="px-3">19.35 hrs</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1 pr-2">Overage</td>
+                        <td class="px-3">3.58 hrs</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1 pr-2">Labor hrs paid</td>
+                        <td class="px-3">25.5 hrs</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1 pr-2">Drive-time</td>
+                        <td class="px-3">6.15 hrs</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right p-1 pr-2">Non-billable %</td>
+                        <td class="px-3">32.17%</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <h5 class="bg-info p-3 text-white">Teams Summary</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th># Jobs</th>
+                    <th>Revenue</th>
+                    <th>Cost</th>
+                    <th>Profit</th>
+                    <th>GPM</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="">Team 1</a></td>
+                    <td>4</td>
+                    <td>$858.25</td>
+                    <td>$354.22</td>
+                    <td>$434.03</td>
+                    <td>45%</td>
+                </tr>
+                <tr>
+                    <td><a href="">Team 2</a></td>
+                    <td>6</td>
+                    <td>$755.25</td>
+                    <td>$254.22</td>
+                    <td>$454.05</td>
+                    <td>55%</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<script>
+        $(function () {
+            $('#allteamsDate span').html("<input  class='mt-4 col-3 rounded' type='text' id='datepicker' placeholder='Select a date...'>");
+            $("#datepicker").datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'yy-mm-dd',
+                onSelect: function (dateText, inst) {
+
+                    var dateObject = $(this).val();
+
+                    $('input#allteamsDateRPT').val(dateObject);
+                    $('#rpt-allteams-day-form').submit();
+                    console.log(dateObject);
+                }
+            });
+        });
+    </script>

@@ -30,11 +30,15 @@ C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Empl
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Home\Manual.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Home\Privacy.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Home\Settings.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\Display.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\Jobs.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\JobsByDate.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\Upload.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Job\ViewJob.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Report\Reports.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Report\RPT_AllTeamsDay.cshtml.g.cs
+C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Report\RPT_TeamDay.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
 C:\Users\Carmine White\Desktop\SM\V4\V4\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_Layout.cshtml.g.cs

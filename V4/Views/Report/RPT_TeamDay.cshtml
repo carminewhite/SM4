@@ -1,0 +1,224 @@
+﻿@model JobTeamViewModel
+    
+<div class="row">
+    <partial name="_NavLeft" />
+    <div class="col-10 border">
+        <h3 class="mt-4 mr-4">Team Performance By Date</h3>
+        @*<div id="teamDate" class="ml-4 mt-4 col-6 d-inline">
+            <span></span>
+            <form method="post" action="/rpt-team-day" id="rpt-team-day-form">
+                <input type="hidden" id="teamDateRPT" name="teamDateRPT" />
+            </form>
+        </div>*@
+        <hr />
+        <div class="p-3">
+            <h5>Team 5 - Wed, Mar 13 2020</h5>
+
+
+            <h5 class="bg-info p-3 text-white">Day Summary</h5>
+            <div class="p-3">
+                <div class="d-inline-block float-left ml-1 mt-3 mr-4">
+                    <table>
+                        <tr>
+                            <td class="text-right p-1"><h4>Revenue:</h4></td>
+                            <td class="ml-3"><h4 class="ml-2">$750.25</h4></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1"><h4>Total Cost:</h4></td>
+                            <td><h4 class="ml-2">$430.60</h4></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1"><h4>Total Profit:</h4></td>
+                            <td><h4 class="ml-2">$319.65</h4></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1"><h4>GPM:</h4></td>
+                            <td><h4 class="ml-2">42.68%</h4></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="d-inline-block m-3 ml-4">
+                    <table class="table-bordered">
+                        <tr>
+                            <td class="text-right p-1 pr-2"># of Jobs</td>
+                            <td class="px-3">4</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1 pr-2">Revenue</td>
+                            <td class="px-3">$750.25</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1 pr-2">Labor Costs</td>
+                            <td class="px-3">$375.25</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1 pr-2">Job Costs</td>
+                            <td class="px-3">$55.35</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1 pr-2">Day's Gross Profit</td>
+                            <td class="px-3">$319.65</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1 pr-2">GPM</td>
+                            <td class="px-3">42.68%</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="d-inline-block m-3">
+                    <table class="table-bordered">
+                        <tr>
+                            <td class="text-right p-1 pr-2">Hrs budgeted</td>
+                            <td class="px-3">15.77 hrs</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1 pr-2">Hrs on Site</td>
+                            <td class="px-3">19.35 hrs</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1 pr-2">Overage</td>
+                            <td class="px-3">3.58 hrs</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1 pr-2">Labor hrs paid</td>
+                            <td class="px-3">25.5 hrs</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1 pr-2">Drive-time</td>
+                            <td class="px-3">6.15 hrs</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right p-1 pr-2">Non-billable %</td>
+                            <td class="px-3">32.17%</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <h5 class="bg-info p-3 text-white">Labor</h5>
+            <table class="table table-sm ml-2 mt-4">
+                <thead>
+                    <tr>
+                        <th>Team Members</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Lunch</th>
+                        <th>Hours</th>
+                        <th>Wage</th>
+                        <th>Payroll Exp</th>
+                        <th>Total Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Victoria Carrereon</td>
+                        <td>8:30am</td>
+                        <td>4:30pm</td>
+                        <td>30</td>
+                        <td>8.5</td>
+                        <td>$16.50</td>
+                        <td>$1.67</td>
+                        <td>$153.94</td>
+                    </tr>
+                    <tr>
+                        <td>Olivia Sanchez</td>
+                        <td>8:30am</td>
+                        <td>4:30pm</td>
+                        <td>30</td>
+                        <td>8.5</td>
+                        <td>$14.50</td>
+                        <td>$1.42</td>
+                        <td>$135.32</td>
+                    </tr>
+                    <tr>
+                        <td>Juana Bautista</td>
+                        <td>8:30am</td>
+                        <td>4:30pm</td>
+                        <td>30</td>
+                        <td>8.5</td>
+                        <td>$14.50</td>
+                        <td>$1.42</td>
+                        <td>$135.32</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">&nbsp;</td>
+                        <td><b>TOTAL</b></td>
+                        <td><b>$424.58</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h5 class="bg-info p-3 text-white">Job Info</h5>
+            <table class="table table-sm ml-2 mt-4">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Customer</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>B. Hrs</th>
+                        <th>Act. Hrs</th>
+                        <th>Workers</th>
+                        <th>Qty</th>
+                        <th>Rate</th>
+                        <th>Revenue</th>
+                        <th>Labor</th>
+                        <th>Job Cost</th>
+                        <th>Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="">1</a></td>
+                        <td><a href="">Jessica Wellington</a></td>
+                        <td>8:13AM</td>
+                        <td>9:34AM</td>
+                        <td>3.00</td>
+                        <td>2.70</td>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>49.00</td>
+                        <td>$147.00</td>
+                        <td><a href="">$49.35</a></td>
+                        <td><a href="">$6.07</a></td>
+                        <td>$91.58</td>
+                    </tr>
+                    <tr>
+                        <td><a href="">2</a></td>
+                        <td><a href="">Chris Lonack</a></td>
+                        <td>9:40AM</td>
+                        <td>11:29AM</td>
+                        <td>3.50</td>
+                        <td>3.64</td>
+                        <td>3</td>
+                        <td>3.5</td>
+                        <td>49.00</td>
+                        <td>$171.50</td>
+                        <td><a href="">$54.22</a></td>
+                        <td><a href="">$7.21</a></td>
+                        <td>$110.17</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@*<script>
+    $(function () {
+        $('#teamDate span').html("<input  class='mt-4 col-3 rounded' type='text' id='datepicker' placeholder='Select a date...'>");
+        $("#datepicker").datepicker({
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm-dd',
+            onSelect: function (dateText, inst) {
+
+                var dateObject = $(this).val();
+
+                $('input#teamDateRPT').val(dateObject);
+                $('#rpt-team-day-form').submit();
+                console.log(dateObject);
+            }
+        });
+    });
+</script>*@

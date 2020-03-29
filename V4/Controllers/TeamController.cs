@@ -43,12 +43,26 @@ namespace V4.Controllers
             dbContext = context;
         }
 
+        [HttpPost("update-default-team")]
+        public IActionResult UpdateDefaultTeam(TeamAssignmentForm form)
+        {
+            Team thisTeam = dbContext.Teams.FirstOrDefault(u => u.Id == form.TeamId);
+
+            thisTeam.DefaultTeamMember1Id = form.EmpId1;
+            thisTeam.DefaultTeamMember2Id = form.EmpId2;
+            thisTeam.DefaultTeamMember3Id = form.EmpId3;
+            thisTeam.UpdatedAt = DateTime.Now;
+            dbContext.SaveChanges();
+
+            return RedirectToAction("Teams");
+        }
+
         [HttpGet("teams")]
         public IActionResult Teams()
         {
             var client_users = new RestClient("https://rest.tsheets.com/api/v1/users?active=true");
             var request = new RestRequest(Method.GET);
-            request.AddHeader("Authorization", "Bearer S.6__d9462a3c90a589188cb6b4f9b14fef4adb5b75f9");
+            request.AddHeader("Authorization", "Bearer S.6__bd323aa9097fa841b85b146575b7347f22e86eb8");
             IRestResponse user_response = client_users.Execute(request);
 
             //----deserialize JSON data and convert into a list:
@@ -87,6 +101,7 @@ namespace V4.Controllers
         [HttpGet("team-assignments")]
         public IActionResult TeamAssignments()
         {
+
             return View("TeamAssignmentsMain");
         }
 
@@ -102,7 +117,7 @@ namespace V4.Controllers
                                         .ToList();
             var client_users = new RestClient("https://rest.tsheets.com/api/v1/users");
             var request = new RestRequest(Method.GET);
-            request.AddHeader("Authorization", "Bearer S.6__d9462a3c90a589188cb6b4f9b14fef4adb5b75f9");
+            request.AddHeader("Authorization", "Bearer S.6__bd323aa9097fa841b85b146575b7347f22e86eb8");
             IRestResponse user_response = client_users.Execute(request);
 
             //----deserialize JSON data and convert into a list:

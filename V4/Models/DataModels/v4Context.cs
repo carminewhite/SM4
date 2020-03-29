@@ -17,5 +17,6 @@ namespace V4.Models
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamAssignment> TeamAssignments { get; set; }
+        public DbSet<Setting> Settings { get; set; }
     }
 }

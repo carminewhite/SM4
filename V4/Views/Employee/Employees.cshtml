@@ -3,13 +3,14 @@
     <partial name="_NavLeft" />
     <div class="col-10 border">
         <h3 class="mt-4">Employee List</h3>
-        <a href="/update-employees" class="btn btn-primary">Update Employees from T-Sheets</a>
+
 
         <table class="table table-striped mt-4">
             <thead>
                 <tr>
                     <th scope="col">Employee ID</th>
                     <th scope="col">Employee</th>
+                    <th scope="col">Pay Rate</th>
                     <th scope="col">Active</th>
                 </tr>
             </thead>
@@ -19,6 +20,14 @@
                     <tr>
                         <td><a href="/">@emp.Id</a></td>
                         <td><a href="/">@emp.First_Name @emp.Last_Name</a></td>
+                        @if (emp.Pay_Rate == 0)
+                        {
+                            <td>$0  (update in T-Sheets)</td>
+                        }
+                        else
+                        {
+                            <td>$@emp.Pay_Rate</td>
+                        }
                         <td>@emp.Active</td>
                     </tr>
                 }
