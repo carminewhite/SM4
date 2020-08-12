@@ -50,7 +50,7 @@ namespace V4.Controllers
         {
             var client_users = new RestClient("https://rest.tsheets.com/api/v1/users?active=true");
             var request = new RestRequest(Method.GET);
-            request.AddHeader("Authorization", "Bearer S.6__bd323aa9097fa841b85b146575b7347f22e86eb8");
+            request.AddHeader("Authorization", "Bearer  S.6__cc1db510635d837d1c4d4020f9ebbed424dc3dc8");
             IRestResponse user_response = client_users.Execute(request);
 
             //----deserialize JSON data and convert into a list:
@@ -80,7 +80,7 @@ namespace V4.Controllers
             var client_users = new RestClient("https://rest.tsheets.com/api/v1/users");
 
             var request = new RestRequest(Method.GET);
-            request.AddHeader("Authorization", "Bearer S.6__bd323aa9097fa841b85b146575b7347f22e86eb8");
+            request.AddHeader("Authorization", "Bearer  S.6__cc1db510635d837d1c4d4020f9ebbed424dc3dc8");
             IRestResponse response = client.Execute(request);
             IRestResponse user_response = client_users.Execute(request);
 
@@ -108,7 +108,6 @@ namespace V4.Controllers
             Console.WriteLine("****************************");
 
             // ---- join these lists on the id column
-
 
             var query = from timecard in timecards
                         join user in all_users

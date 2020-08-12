@@ -1,20 +1,94 @@
-﻿@model Job
+﻿@model ThisJobEmployeeListViewModel
 <div class="row">
     <partial name="_NavLeft" />
     <div class="col-10 border p-3">
         <div class="row">
-
-            <div class="col-6 mt-4">
-                <h3>@Model.Cust.FirstName @Model.Cust.LastName</h3>
-                <p>@Model.Cust.Address<br />
-                @Model.Cust.City, WA @Model.Cust.Zip</p>
+            <div class="col-6 mt-2">
+                <h3>@Model.Job.Cust.FirstName @Model.Job.Cust.LastName</h3>
+                <p>
+                    @Model.Job.Cust.Address<br />
+                @Model.Job.Cust.City, WA @Model.Job.Cust.Zip
+                </p>
+            </div>
+            <div class="col-6">
+                <p class="text-right">Job: #@Model.Job.JobId</p>
+                <p class="text-right"><a href="">Team Day</a></p>
             </div>
             <div class="col-12 mt-2">
                 <hr />
-                <p>Job# @Model.JobId:</p>
-                <p class="pl-2">@Model.ScheduleDate.ToLongDateString()</p>
-                <p class="pl-2">@Model.Tm.TeamName</p>
+                <h5>Job Summary</h5>
+                <div class="col-6">
+                    <div class="col-6">
+                        <p>Hours on site</p>
+                    </div>
+                    <div class="col-6">
+
+                    </div>
+                </div>
+
+                <table class="table table-striped mt-4" data-show-footer="true">
+                    <thead>
+                        <tr>
+                            <th colspan="1" scope="colgroup" class="bg-dark text-light p-1">@Model.Job.Tm.TeamName</th>
+                            <th colspan="5" scope="colgroup" class="bg-dark text-light text-right p-1">@Model.Job.ScheduleDate.ToLongDateString()</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Worker</th>
+                            <th scope="col">Budg. Hrs</th>
+                            <th scope="col">Act. Hrs</th>
+                            <th scope="col">Over/Under Hrs</th>
+                            <th scope="col">Wage</th>
+                            <th scope="col">Taxes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var jobdeets in Model.JobDetails)
+                            {
+                                <tr>
+                                    <td>@jobdeets.EmployeeName</td>
+                                    <td>@((@Model.Job.BudgetedHours / @Model.Job.Men).ToString("0.00"))</td>
+                                    <td>@Model.Job.Hours</td>
+                                    <td>@Model.OveragePerWorker hrs / (@Model.OveragePctPerWorker.ToString("P"))</td>
+                                    <td>@string.Format("{0:C}", @jobdeets.WagesCost)</td>
+                                    <td>@string.Format("{0:C}", @jobdeets.PayrollBurdenCost)</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="font-weight-bold">TOTALS</td>
+                            <td class="font-weight-bold">@Model.Job.BudgetedHours</td>
+                            <td class="font-weight-bold">@Model.Job.TotalHours</td>
+                            <td class="font-weight-bold">@Model.Job.Overage hrs / (@((@Model.Job.Overage / @Model.Job.BudgetedHours).ToString("P")))</td>
+                            <td class="text-center font-weight-bold" colspan="2">@string.Format("{0:C}", @Model.TotalPayroll)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                @*<table class="table table-striped mt-4 col-4 d-inline">
+                        <tr>
+                            <td>Revenue:</td>
+                            <td>@Model.Job.Amount</td>
+                        </tr>
+                        <tr>
+                            <td>Cost:</td>
+                            <td>asdf</td>
+                        </tr>
+                        <tr>
+                            <td>Gross:</td>
+                            <td>asdf</td>
+                        </tr>
+                        <tr>
+                            <td>GPM:</td>
+                            <td>%%</td>
+                        </tr>
+                    </table>*@
+
+
+
             </div>
         </div>
     </div>
 </div>
+

@@ -13,6 +13,9 @@ namespace V4.Models
         public int Id { get; set; }
 
         [Column(TypeName = "decimal(5, 2)")]
+        public decimal Default_Hourly_Wage { get; set; }
+
+        [Column(TypeName = "decimal(5, 2)")]
         public decimal EE_payroll_burden_percent { get; set; }
 
         [Column(TypeName = "decimal(5, 2)")]

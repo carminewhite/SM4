@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using ExcelDataReader;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using V4.Models;
+using RestSharp;
+using Newtonsoft.Json.Linq;
 
 namespace V4.Controllers
 {
@@ -274,8 +274,180 @@ namespace V4.Controllers
                         .Include(c => c.Cust)
                         .Include(t => t.Tm)
                         .FirstOrDefault();
-            Console.WriteLine($"Job#: {thisjob.JobId}, Name: {thisjob.Cust.FirstName}");
-            return View("ViewJob", thisjob);
+       
+
+            var client_users = new RestClient("https://rest.tsheets.com/api/v1/users");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Authorization", "Bearer  S.6__cc1db510635d837d1c4d4020f9ebbed424dc3dc8");
+            IRestResponse user_response = client_users.Execute(request);
+
+            //----deserialize JSON data and convert into a list:
+            JObject api_users = JObject.Parse(user_response.Content);
+            var all_users = api_users["results"]["users"]
+                .Children()
+                .Children()
+                .Select(c => c.ToObject<Employee>())
+                .ToList();
+
+            // Initialize a list of job details
+            List<JobDetails> job_details = new List<JobDetails>();
+            // filter list of employees to be shown only if they are on the job
+            List<int> filtered_list = new List<int>
+            {
+                // add each member id to a generic int list so we can iterate over them.
+                thisjob.TeamMemberId1,
+                thisjob.TeamMemberId2,
+                thisjob.TeamMemberId3,
+                thisjob.TeamMemberId4,
+            };
+            //pull DB default settings into a list, to limit DB calls
+            Setting settings = dbContext.Settings
+                               .FirstOrDefault();
+
+            foreach (var item in filtered_list)
+            {
+                var emp = all_users.FirstOrDefault(u => u.Id == item);
+                if (emp != null)
+                {
+                    // found a match in both lists
+                    Console.WriteLine($"########\r\n(not null)Employee 1: {emp.Id} - {emp.First_Name} {emp.Last_Name}");
+                    JobDetails j = new JobDetails
+                    {
+                        EmployeeName = emp.First_Name + " " + emp.Last_Name,
+                        WagesCost = (decimal)emp.Pay_Rate * thisjob.Hours,
+                    };
+                    j.PayrollBurdenCost = (j.WagesCost * settings.EE_payroll_burden_percent) / 100;
+                    job_details.Add(j);
+
+                }
+                else
+                {
+                    if (item == 0)
+                    {
+                        Console.WriteLine("\nEmployee # is 0 - NOT ASSIGNED");
+                        JobDetails j = new JobDetails
+                        {
+                            EmployeeName = "No employee assigned",
+                            WagesCost = 0,
+                            PayrollBurdenCost = 0
+                        };
+                        //job_details.Add(j);
+
+                    }
+                    else if (item == 1)
+                    {
+                        Console.WriteLine("\n1:  Previous worker.  Need to default #'s");
+                        JobDetails j = new JobDetails
+                        {
+                            EmployeeName = "Past worker (default #'s)",
+                            WagesCost = settings.Default_Hourly_Wage * thisjob.Hours,
+                        };
+                        j.PayrollBurdenCost = (j.WagesCost * settings.EE_payroll_burden_percent)/100;
+                        job_details.Add(j);
+
+                    }
+                    else if (item == 2)
+                    {
+                        Console.WriteLine("\n2:  No worker in this slot today");
+                        JobDetails j = new JobDetails
+                        {
+                            EmployeeName = "No employee assigned",
+                            WagesCost = 0,
+                            PayrollBurdenCost = 0
+                        };
+                        job_details.Add(j);
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nsomething weird happened here, not sure what");
+                        JobDetails j = new JobDetails
+                        {
+                            EmployeeName = "Something went wrong",
+                            WagesCost = 0,
+                            PayrollBurdenCost = 0
+                        };
+                        job_details.Add(j);
+                    }
+                }
+            }
+            //List<JobDetails> this_job_details = new List<JobDetails>();
+
+
+
+
+
+            //final calcs
+            decimal wages_sum = 0;
+            decimal burden_sum = 0;
+            foreach (var item in job_details)
+            {
+                wages_sum += item.WagesCost;
+                burden_sum += item.PayrollBurdenCost;
+            }
+
+            decimal merch_cost = thisjob.Amount * settings.Avg_Merch_Fees_percent;
+            decimal veh_cost = thisjob.Amount * settings.Avg_Vehicle_Costs_percent;
+            decimal supplies_cost = thisjob.Amount * settings.Avg_Per_Job_Supply_Cost_amount;
+            decimal misc_cost = thisjob.Amount * settings.Misc_Additional_percent;
+            decimal gross_profit = thisjob.Amount - wages_sum - burden_sum - merch_cost - veh_cost - supplies_cost - misc_cost;
+            
+
+            var JobEmployeeVM = new ThisJobEmployeeListViewModel
+            {
+                JobDetails = job_details,
+                Job = thisjob,
+                TotalPayroll = wages_sum + burden_sum,
+                MerchantFeesCost = merch_cost,
+                VehicleCost = veh_cost,
+                SuppliesCost = supplies_cost,
+                MiscCost = misc_cost,
+                GrossProfit = gross_profit,
+                TotalWages = wages_sum,
+                TotalPayrollBurden = burden_sum,
+                OveragePerWorker = thisjob.Overage / thisjob.Men,
+                OveragePctPerWorker = (thisjob.Overage / thisjob.Men) / thisjob.BudgetedHours,
+                OveragePctTotal = thisjob.Overage / thisjob.Men
+            };
+
+            // run all calculations here, then send as a list to the view
+
+
+
+
+
+
+            Console.WriteLine($"************** \r\nEmployee 1: {thisjob.TeamMemberId1}\r\nEmployee 2: {thisjob.TeamMemberId2}\nEmployee 3: {thisjob.TeamMemberId3}\nEmployee 4: {thisjob.TeamMemberId4}");
+            return View("ViewJob", JobEmployeeVM);
+
+            //List<Team> pull_teams = dbContext.Teams
+            //                        .OrderBy(u => u.TeamName)
+            //                        .ToList();
+            ////List<TeamAssignment> tm_assignments = dbContext.TeamAssignments
+            ////                                        .Where(d => d.AssignedDate == assignmentDate)
+            ////                                        .OrderBy(t => t.TeamId)
+            ////                                        .ToList();
+            //List<Team> filteredTeams = new List<Team>();
+            //foreach (var team in pull_teams)
+            //{
+            //    if (jobsThisDate.Any(u => u.TeamId == team.Id))
+            //    {
+            //        filteredTeams.Add(team);
+            //    }
+            //}
+
+
+            //var jtVM = new JobTeamViewModel
+            //{
+            //    Jobs = jobsThisDate,
+            //    Employees = all_users,
+            //    Teams = filteredTeams
+            //    //Assignments = tm_assignments,
+            //};
+            //return View("TeamAssignments", jtVM);
         }
+
+
     }
+ 
 }

@@ -38,5 +38,9 @@ namespace V4.Models
         public int CompanyId { get; set; }
         public Customer Cust { get; set; }
         public Team Tm { get; set; }
+
+        // Calculation Fields
+        public decimal TotalHours { get { return Hours * Men; } }
+        public decimal Overage { get { return TotalHours - BudgetedHours; } }
     }
 }

@@ -44,6 +44,7 @@ namespace V4.Controllers
                 Setting first_time_setting = new Setting();
                 {
                     first_time_setting.CompanyId = 1;
+                    first_time_setting.Default_Hourly_Wage = form.Default_Hourly_Wage;
                     first_time_setting.EE_payroll_burden_percent = form.EE_payroll_burden_percent;
                     first_time_setting.Avg_Merch_Fees_percent = form.Avg_Merch_Fees_percent;
                     first_time_setting.Avg_Per_Job_Supply_Cost_amount = form.Avg_Per_Job_Supply_Cost_amount;
@@ -57,6 +58,7 @@ namespace V4.Controllers
             }
             else
             {
+                current_setting.Default_Hourly_Wage = form.Default_Hourly_Wage;
                 current_setting.EE_payroll_burden_percent = form.EE_payroll_burden_percent;
                 current_setting.Avg_Merch_Fees_percent = form.Avg_Merch_Fees_percent;
                 current_setting.Avg_Vehicle_Costs_percent = form.Avg_Vehicle_Costs_percent;

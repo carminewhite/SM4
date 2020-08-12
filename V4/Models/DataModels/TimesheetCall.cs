@@ -104,11 +104,16 @@ namespace V4.Models.DataModels
         public DateTime end { get; set; }
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning disable IDE1006 // Naming Styles
-        public double duration { get; set; }
+        public int duration { get; set; }
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning disable IDE1006 // Naming Styles
         public string date { get; set; }
 #pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore IDE1006 // Naming Styles
+
+        public int jobcode_id { get; set; }
+#pragma warning restore IDE1006 // Naming Styles
+
     }
 
     public class Users

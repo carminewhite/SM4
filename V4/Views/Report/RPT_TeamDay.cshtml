@@ -1,4 +1,4 @@
-﻿@model JobTeamViewModel
+﻿@model RPTTeamDateViewModel
     
 <div class="row">
     <partial name="_NavLeft" />
@@ -110,8 +110,62 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Victoria Carrereon</td>
+                    @{
+                        Employee[] arrEmp = new Employee[3];
+                        var getJob = Model.Jobs.FirstOrDefault();
+                        arrEmp[0] = Model.Employees.FirstOrDefault(u => u.Id == getJob.TeamMemberId1);
+                        arrEmp[1] = Model.Employees.FirstOrDefault(u => u.Id == getJob.TeamMemberId2);
+                        arrEmp[2] = Model.Employees.FirstOrDefault(u => u.Id == getJob.TeamMemberId3);
+
+                        for (var i = 0; i > 3; i++)
+                        {
+                            if (arrEmp[i].Id == 1)
+                            {
+                                <tr>
+                                    <td>*Inactive Worker*</td>
+                                    <td>am</td>
+                                    <td>pm</td>
+                                    <td>hmm</td>
+                                    <td>hr</td>
+                                    <td>rate</td>
+                                    <td>burden</td>
+                                    <td>total</td>
+                                </tr>
+                            }
+                            if (arrEmp[i].Id == 0)
+                            {
+                                <tr>
+                                    <td colspan="8">No worker for today</td>
+                                </tr>
+                            }
+                            if (arrEmp[i].Id == 2)
+                            {
+                                <tr>
+                                    <td colspan="8">Worker not assigned for today</td>
+                                </tr>
+                            }
+                            if (arrEmp == null)
+                            {
+                                <tr>
+                                    <td colspan="8">Couldn't find this employee</td>
+                                </tr>
+                            }
+                            <tr>
+                                <td>@arrEmp[i].First_Name @arrEmp[i].Last_Name</td>
+                                <td>@arrEmp[i].Pay_Rate</td>
+                            </tr>
+
+                        }
+                        if (getJob.TeamMemberId1 == 0 && getJob.TeamMemberId2 == 0 && getJob.TeamMemberId3 == 0) // not assigned
+                        {
+                            <tr>
+                                <td colspan="8">Teams not assigned for this date</td>
+                            </tr>
+                        }
+
+                    }
+                    @*<tr>
+                        <td>@emp1.First_Name @emp1.Last_Name</td>
                         <td>8:30am</td>
                         <td>4:30pm</td>
                         <td>30</td>
@@ -121,30 +175,10 @@
                         <td>$153.94</td>
                     </tr>
                     <tr>
-                        <td>Olivia Sanchez</td>
-                        <td>8:30am</td>
-                        <td>4:30pm</td>
-                        <td>30</td>
-                        <td>8.5</td>
-                        <td>$14.50</td>
-                        <td>$1.42</td>
-                        <td>$135.32</td>
-                    </tr>
-                    <tr>
-                        <td>Juana Bautista</td>
-                        <td>8:30am</td>
-                        <td>4:30pm</td>
-                        <td>30</td>
-                        <td>8.5</td>
-                        <td>$14.50</td>
-                        <td>$1.42</td>
-                        <td>$135.32</td>
-                    </tr>
-                    <tr>
                         <td colspan="6">&nbsp;</td>
                         <td><b>TOTAL</b></td>
                         <td><b>$424.58</b></td>
-                    </tr>
+                    </tr>*@
                 </tbody>
             </table>
             <h5 class="bg-info p-3 text-white">Job Info</h5>
@@ -162,41 +196,42 @@
                         <th>Rate</th>
                         <th>Revenue</th>
                         <th>Labor</th>
-                        <th>Job Cost</th>
-                        <th>Profit</th>
+                        <th>Supplies</th>
+                        <th>Gross Profit</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><a href="">1</a></td>
-                        <td><a href="">Jessica Wellington</a></td>
-                        <td>8:13AM</td>
-                        <td>9:34AM</td>
-                        <td>3.00</td>
-                        <td>2.70</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>49.00</td>
-                        <td>$147.00</td>
-                        <td><a href="">$49.35</a></td>
-                        <td><a href="">$6.07</a></td>
-                        <td>$91.58</td>
-                    </tr>
-                    <tr>
-                        <td><a href="">2</a></td>
-                        <td><a href="">Chris Lonack</a></td>
-                        <td>9:40AM</td>
-                        <td>11:29AM</td>
-                        <td>3.50</td>
-                        <td>3.64</td>
-                        <td>3</td>
-                        <td>3.5</td>
-                        <td>49.00</td>
-                        <td>$171.50</td>
-                        <td><a href="">$54.22</a></td>
-                        <td><a href="">$7.21</a></td>
-                        <td>$110.17</td>
-                    </tr>
+                    @{
+                        var counter = 1;
+                        decimal total = 0;
+                    }
+                    @foreach (var job in Model.Jobs)
+                    {
+                        var jobcost = Model.JobCostReports.FirstOrDefault(u => u.JobId == job.JobId);
+
+                        <tr>
+                            <td><a href="">@counter</a></td>
+                            <td><a href="/viewcustomer/@job.Cust.Id">@job.Cust.FirstName @job.Cust.LastName</a></td>
+                            <td>@job.AppStartTime</td>
+                            <td>@job.AppEndTime</td>
+                            <td>@job.BudgetedHours</td>
+                            <td>@(job.Hours * @job.Men)</td>
+                            <td>@job.Men</td>
+                            <td>@job.Quantity</td>
+                            <td>$@job.Rate</td>
+                            <td>$@job.Amount</td>
+                            <td>$@jobcost.LaborAndBurden</td>
+                            <td>$@jobcost.JobCost</td>
+                            <td>$@jobcost.Profit</td>
+                        </tr>
+                        counter++;
+                        total += jobcost.Profit;
+                    }
+                        <tr>
+                            <td colspan="11">&nbsp;</td>
+                            <td><b>TOTAL</b></td>
+                            <td><b>$@total</b></td>
+                        </tr>
                 </tbody>
             </table>
         </div>

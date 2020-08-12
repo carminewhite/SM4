@@ -62,7 +62,7 @@ namespace V4.Controllers
         {
             var client_users = new RestClient("https://rest.tsheets.com/api/v1/users?active=true");
             var request = new RestRequest(Method.GET);
-            request.AddHeader("Authorization", "Bearer S.6__bd323aa9097fa841b85b146575b7347f22e86eb8");
+            request.AddHeader("Authorization", "Bearer  S.6__cc1db510635d837d1c4d4020f9ebbed424dc3dc8");
             IRestResponse user_response = client_users.Execute(request);
 
             //----deserialize JSON data and convert into a list:
@@ -117,7 +117,7 @@ namespace V4.Controllers
                                         .ToList();
             var client_users = new RestClient("https://rest.tsheets.com/api/v1/users");
             var request = new RestRequest(Method.GET);
-            request.AddHeader("Authorization", "Bearer S.6__bd323aa9097fa841b85b146575b7347f22e86eb8");
+            request.AddHeader("Authorization", "Bearer  S.6__cc1db510635d837d1c4d4020f9ebbed424dc3dc8");
             IRestResponse user_response = client_users.Execute(request);
 
             //----deserialize JSON data and convert into a list:
@@ -131,17 +131,25 @@ namespace V4.Controllers
             List<Team> pull_teams = dbContext.Teams
                                     .OrderBy(u => u.TeamName)
                                     .ToList();
-            List<TeamAssignment> tm_assignments = dbContext.TeamAssignments
-                                                    .Where(d => d.AssignedDate == assignmentDate)
-                                                    .OrderBy(t => t.TeamId)
-                                                    .ToList();
+            //List<TeamAssignment> tm_assignments = dbContext.TeamAssignments
+            //                                        .Where(d => d.AssignedDate == assignmentDate)
+            //                                        .OrderBy(t => t.TeamId)
+            //                                        .ToList();
+            List<Team> filteredTeams = new List<Team>();
+            foreach (var team in pull_teams)
+            {
+                if (jobsThisDate.Any(u => u.TeamId == team.Id)){
+                    filteredTeams.Add(team);
+                }
+            }
+
 
             var jtVM = new JobTeamViewModel
             {
                 Jobs = jobsThisDate,
                 Employees = all_users,
-                Teams = pull_teams,
-                Assignments = tm_assignments,
+                Teams = filteredTeams
+                //Assignments = tm_assignments,
             };
             return View("TeamAssignments", jtVM);
         }
@@ -149,43 +157,8 @@ namespace V4.Controllers
         [HttpPost("save-team-assignment")]
         public IActionResult SaveTeamAssignment(TeamAssignmentForm form, string command)
         {
-            if (command.Equals("Save Today Only"))
-                //Assignment by date
-            {
-                //If team and date both exist, then update record with new team assignment
-                TeamAssignment checkAssignment = dbContext.TeamAssignments
-                                                 .FirstOrDefault(u => u.AssignedDate == form.AssignedDate && u.TeamId == form.TeamId);
-                if (checkAssignment != null)
-                {
-                    checkAssignment.EmpId1 = form.EmpId1;
-                    checkAssignment.EmpId2 = form.EmpId2;
-                    checkAssignment.EmpId3 = form.EmpId3;
-                    checkAssignment.AssignmentCompleted = form.AssignmentCompleted;
-                    checkAssignment.UpdatedAt = DateTime.Now;
-                    dbContext.SaveChanges();
-                }
-                //Else add new record
-                else
-                {
-                    TeamAssignment newTA = new TeamAssignment
-                    {
-                        AssignedDate = form.AssignedDate,
-                        AssignmentCompleted = form.AssignmentCompleted,
-                        EmpId1 = form.EmpId1,
-                        EmpId2 = form.EmpId2,
-                        EmpId3 = form.EmpId3,
-                        TeamId = form.TeamId
-                    };
-                    dbContext.Add(newTA);
-                    dbContext.SaveChanges();
-                }
-
-                string reroutedate = form.AssignedDate.ToString("yyyy-MM-dd");
-
-                return RedirectToAction("TeamAssignmentsByDate", new { date = reroutedate });
-            }
-            else
-            ///  Default team assignment
+            if (command.Equals("Save as Default"))
+                // Save to Default Team if this selection is picked
             {
                 Team pullTeam = dbContext.Teams
                                 .FirstOrDefault(u => u.Id == form.TeamId);
@@ -194,55 +167,27 @@ namespace V4.Controllers
                 pullTeam.DefaultTeamMember3Id = form.EmpId3;
                 pullTeam.UpdatedAt = DateTime.Now;
                 dbContext.SaveChanges();
-
-                //*********  duplicate code as above ************
-
-                //If team and date both exist, then update record with new team assignment
-                TeamAssignment checkAssignment = dbContext.TeamAssignments
-                                                 .FirstOrDefault(u => u.AssignedDate == form.AssignedDate && u.TeamId == form.TeamId);
-                if (checkAssignment != null)
-                {
-                    checkAssignment.EmpId1 = form.EmpId1;
-                    checkAssignment.EmpId2 = form.EmpId2;
-                    checkAssignment.EmpId3 = form.EmpId3;
-                    checkAssignment.AssignmentCompleted = form.AssignmentCompleted;
-                    checkAssignment.UpdatedAt = DateTime.Now;
-                    dbContext.SaveChanges();
-                }
-                //Else add new record
-                else
-                {
-                    TeamAssignment newTA = new TeamAssignment
-                    {
-                        AssignedDate = form.AssignedDate,
-                        AssignmentCompleted = form.AssignmentCompleted,
-                        EmpId1 = form.EmpId1,
-                        EmpId2 = form.EmpId2,
-                        EmpId3 = form.EmpId3,
-                        TeamId = form.TeamId
-                    };
-                    dbContext.Add(newTA);
-                    dbContext.SaveChanges();
-                }
-                string reroutedate = form.AssignedDate.ToString("yyyy-MM-dd");
-
-                return RedirectToAction("TeamAssignmentsByDate", new { date = reroutedate });
+                string date = form.AssignedDate.ToString("yyyy-MM-dd");
+                return RedirectToAction("TeamAssignmentsByDate", new { date });
             }
+
+            List<Job> thisDaysJobs = dbContext.Jobs.Where(u => u.ScheduleDate == form.AssignedDate && u.TeamId == form.TeamId).ToList();
+            if (thisDaysJobs == null)
+            {
+                //if there is no job for this assignment date, will need to handle this issue.
+                string reroutedateifnull = form.AssignedDate.ToString("yyyy-MM-dd");
+                return RedirectToAction("TeamAssignmentsByDate", new { date = reroutedateifnull });
+            }
+            foreach (var job in thisDaysJobs)
+            {
+                job.TeamMemberId1 = form.EmpId1;
+                job.TeamMemberId2 = form.EmpId2;
+                job.TeamMemberId3 = form.EmpId3;
+                job.UpdatedAt = DateTime.Now;
+                dbContext.SaveChanges();
+            }
+            string reroutedate = form.AssignedDate.ToString("yyyy-MM-dd");
+            return RedirectToAction("TeamAssignmentsByDate", new { date = reroutedate });
         }
-
-        // ***********  Trying to make an AJAX post, so we can assign the default team on the team assignments page without refreshing)
-
-        //[HttpPost("save-default-team-assignment")]
-        //public IActionResult SaveDefaultTeamAssignment(TeamAssignmentForm form)
-        //{
-
-        //    TeamAssignment tmAssTest = new TeamAssignment();
-        //    tmAssTest.EmpId1 = form.EmpId1;
-        //    tmAssTest.EmpId2 = form.EmpId2;
-        //    tmAssTest.EmpId3 = form.EmpId3;
-        //    tmAssTest.Id = form.TeamId;
-
-        //    return Json(tmAssTest);
-        //}
     }
 }

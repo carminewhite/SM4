@@ -13,7 +13,7 @@ namespace V4.Models
         public string First_Name { get; set; }
         public string Last_Name { get; set; }
         public string Username { get; set; }
-        public float Pay_Rate { get; set; }
+        public decimal Pay_Rate { get; set; }
         public int DefaultTeam { get; set; }
         public bool Active { get; set; }
 

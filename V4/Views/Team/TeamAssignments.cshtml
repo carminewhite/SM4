@@ -14,199 +14,191 @@
             <hr />
             @if (Model.Jobs.Count != 0)
             {
-
-
                 var todayShort = Model.Jobs.First().ScheduleDate.ToShortDateString();
                 var todayLong = Model.Jobs.First().ScheduleDate.ToLongDateString();
                 DateTime todayDT = Model.Jobs.First().ScheduleDate;
-
                 <h3>@todayLong</h3>
                 @foreach (var team in Model.Teams)
                 {
-        <div class="mt-2 col-3 border rounded p-3 d-inline-block">
-            @{
-                var assignedTeam = Model.Assignments.FirstOrDefault(a => a.TeamId == team.Id);
+                    var thisTeamJob = Model.Jobs.FirstOrDefault(u => u.TeamId == team.Id);
+                    string AssignedOrNotBorder;
+                    string AssignedOrNotNotice;
+                    string AssignedOrNotNoticeColor;
+                    if (thisTeamJob.TeamMemberId1 == 0 || thisTeamJob.TeamMemberId2 == 0 || thisTeamJob.TeamMemberId3 == 0)
+                    {
+                        AssignedOrNotBorder = "border border-danger";
+                        AssignedOrNotNotice = "Not Assigned";
+                        AssignedOrNotNoticeColor = "text-danger";
+                    }
+                    else
+                    {
+                        AssignedOrNotBorder = "border";
+                        AssignedOrNotNotice = "Assigned";
+                        AssignedOrNotNoticeColor = "text-success";
+                    }
 
-                var assignmentExists = Model.Assignments.Any(a => a.TeamId == team.Id);
-                if (assignmentExists)
-                {
-                    <p class="text-success text-sm-left">Assigned</p>
-                }
-                else
-                {
-                    <p class="text-danger text-sm-left">Not Assigned</p>
-                }
-            }
-            <h4 class="mt-4 d-inline">@team.TeamName</h4>
-            @* save for later... with ajax below *@
-            @*<div>
-                <a id="@team.Id" href="javascript:;" class="d-inline-block text-sm-right">Save as Default Team</a>
-            </div>*@
+                    <div class="@AssignedOrNotBorder mt-2 col-3 rounded p-3 d-inline-block">
+                       
+                        <h4 class="mt-4 d-inline">@team.TeamName</h4>
+                        <p class="@AssignedOrNotNoticeColor">@AssignedOrNotNotice</p>
+                        @* save for later... with ajax below *@
+                        @*<div>
+                            <a id="@team.Id" href="javascript:;" class="d-inline-block text-sm-right">Save as Default Team</a>
+                        </div>*@
 
-            <form action="/save-team-assignment" method="post" id="form-@team.Id">
-                <input type="hidden" value="@team.Id" id="TeamId" name="TeamId" />
-                <input type="hidden" value="@todayDT" id="AssignedDate" name="AssignedDate" />
-                <input type="hidden" value="true" id="AssignmentCompleted" name="AssignmentCompleted" />
-                <div class="form-group">
-                    <select class="form-control mt-1" id="EmpId1" name="EmpId1">
-                        @{
-                            if (assignmentExists)
-                            {
-                                Employee assignedEmp1 = Model.Employees.FirstOrDefault(u => u.Id == assignedTeam.EmpId1);
-                                if (assignedEmp1 != null)
-                                {
-                                    <option value="@assignedEmp1.Id">@assignedEmp1.First_Name @assignedEmp1.Last_Name</option>
-                                    <option> ----------------- </option>
-                                    <option value="1"> -- Previous worker -- </option>
-                                }
-                                else
-                                {
-                                    if (assignedTeam.EmpId1 == 1)
-                                    {
-                                        <option value="1"> ** Previous worker ** </option>
+                        <form action="/save-team-assignment" method="post" id="form-@team.Id">
+                            <input type="hidden" value="@team.Id" id="TeamId" name="TeamId" />
+                            <input type="hidden" value="@todayDT" id="AssignedDate" name="AssignedDate" />
+                            <input type="hidden" value="true" id="AssignmentCompleted" name="AssignmentCompleted" />
+                            <div class="form-group">
+                                <select class="form-control mt-1" id="EmpId1" name="EmpId1">
+                                    @{
+                                        if (thisTeamJob.TeamMemberId1 == 1)
+                                        {
+                                            <option value="1"> ** Inactive worker ** </option>
+                                        }
+                                        else if (thisTeamJob.TeamMemberId1 == 2)
+                                        {
+                                            <option value="2">No Worker Today</option>
+                                        }
+                                        else if (thisTeamJob.TeamMemberId1 == 0)
+                                        {
+                                            // if unassigned - pull default employee
+                                            Employee defaultEmp1 = Model.Employees.FirstOrDefault(e => e.Id == team.DefaultTeamMember1Id);
+                                            if (defaultEmp1 == null)
+                                            {
+                                                <option value="0">No default set</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@defaultEmp1.Id">@defaultEmp1.First_Name @defaultEmp1.Last_Name</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // if Employee has been deleted from Tsheets, they won't be included in the Employee object.  Defaulting to Inactive Worker.
+                                            // This will overwrite the employee in the DB with a #1 for the employee ID once saved
+                                            Employee assignedEmp1 = Model.Employees.FirstOrDefault(u => u.Id == thisTeamJob.TeamMemberId1);
+                                            if (assignedEmp1 == null)
+                                            {
+                                                <option value="1"> ** Inactive worker ** </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@assignedEmp1.Id">@assignedEmp1.First_Name @assignedEmp1.Last_Name</option>
+                                            }
+                                        }
                                         <option> ----------------- </option>
-                                        <option> -- Select a worker --</option>
-                                    }
-                                    else
-                                    {
-                                        <option> -- Select a worker --</option>
-                                        <option> ----------------- </option>
-                                        <option value="1"> -- Previous worker -- </option>
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                // if assigned = false
-                                var default1 = Model.Employees.FirstOrDefault(u => u.Id == team.DefaultTeamMember1Id);
-                                if (default1 != null)
-                                {
-                                    <option value="@default1.Id">@default1.First_Name @default1.Last_Name</option>
-                                    <option> ----------------- </option>
-                                    <option value="1"> -- Previous worker -- </option>
-                                }
-                                else
-                                {
-                                    <option> -- Select a worker --</option>
-                                    <option> ----------------- </option>
-                                    <option value="1"> -- Previous worker -- </option>
-                                }
-                            }
+                                        <option value="1"> ** Inactive worker ** </option>
+                                        <option value="2">No Worker Today</option>
 
-                            foreach (var employee in Model.Employees)
-                            {
-                                <option value="@employee.Id">@employee.First_Name @employee.Last_Name</option>
-                            }
-                        }
-                    </select>
-                    <select class="form-control mt-1" id="EmpId2" name="EmpId2">
-                        @{
-                            if (assignmentExists)
-                            {
-                                Employee assignedEmp2 = Model.Employees.FirstOrDefault(u => u.Id == assignedTeam.EmpId2);
-                                if (assignedEmp2 != null)
-                                {
-                                    <option value="@assignedEmp2.Id">@assignedEmp2.First_Name @assignedEmp2.Last_Name</option>
-                                    <option> ----------------- </option>
-                                    <option value="1"> -- Previous worker -- </option>
-                                }
-                                else
-                                {
-                                    if (assignedTeam.EmpId2 == 1)
-                                    {
-                                        <option value="1"> ** Previous worker ** </option>
-                                        <option> ----------------- </option>
-                                        <option> -- Select a worker --</option>
+                                        foreach (var employee in Model.Employees)
+                                        {
+                                            <option value="@employee.Id">@employee.First_Name @employee.Last_Name</option>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <option> -- Select a worker --</option>
+                                </select>
+                                <select class="form-control mt-1" id="EmpId2" name="EmpId2">
+                                    @{
+                                        if (thisTeamJob.TeamMemberId2 == 1)
+                                        {
+                                            <option value="1"> ** Inactive worker ** </option>
+                                        }
+                                        else if (thisTeamJob.TeamMemberId2 == 2)
+                                        {
+                                            <option value="2">No Worker Today</option>
+                                        }
+                                        else if (thisTeamJob.TeamMemberId2 == 0)
+                                        {
+                                            // if unassigned - pull default employee
+                                            Employee defaultEmp2 = Model.Employees.FirstOrDefault(e => e.Id == team.DefaultTeamMember2Id);
+                                            if (defaultEmp2 == null)
+                                            {
+                                                <option value="2">No default set</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@defaultEmp2.Id">@defaultEmp2.First_Name @defaultEmp2.Last_Name</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // if Employee has been deleted from Tsheets, they won't be included in the Employee object.  Defaulting to Inactive Worker.
+                                            // This will overwrite the employee in the DB with a #1 for the employee ID once saved
+                                            Employee assignedEmp2 = Model.Employees.FirstOrDefault(u => u.Id == thisTeamJob.TeamMemberId2);
+                                            if (assignedEmp2 == null)
+                                            {
+                                                <option value="1"> ** Inactive worker ** </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@assignedEmp2.Id">@assignedEmp2.First_Name @assignedEmp2.Last_Name</option>
+                                            }
+                                        }
                                         <option> ----------------- </option>
-                                        <option value="1"> -- Previous worker -- </option>
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                // if assigned = false
-                                var default2 = Model.Employees.FirstOrDefault(u => u.Id == team.DefaultTeamMember2Id);
-                                if (default2 != null)
-                                {
-                                    <option value="@default2.Id">@default2.First_Name @default2.Last_Name</option>
-                                    <option> ----------------- </option>
-                                    <option value="1"> -- Previous worker -- </option>
-                                }
-                                else
-                                {
-                                    <option> -- Select a worker --</option>
-                                    <option> ----------------- </option>
-                                    <option value="1"> -- Previous worker -- </option>
-                                }
-                            }
+                                        <option value="1"> ** Inactive worker ** </option>
+                                        <option value="2">No Worker Today</option>
 
-                            foreach (var employee in Model.Employees)
-                            {
-                                <option value="@employee.Id">@employee.First_Name @employee.Last_Name</option>
-                            }
-                        }
-                    </select>
-                    <select class="form-control mt-1" id="EmpId3" name="EmpId3">
-                        @{
-                            if (assignmentExists)
-                            {
-                                Employee assignedEmp3 = Model.Employees.FirstOrDefault(u => u.Id == assignedTeam.EmpId3);
-                                if (assignedEmp3 != null)
-                                {
-                                    <option value="@assignedEmp3.Id">@assignedEmp3.First_Name @assignedEmp3.Last_Name</option>
-                                    <option> ----------------- </option>
-                                    <option value="1"> -- Previous worker -- </option>
-                                }
-                                else
-                                {
-                                    if (assignedTeam.EmpId3 == 1)
-                                    {
-                                        <option value="1"> ** Previous worker ** </option>
-                                        <option> ----------------- </option>
-                                        <option> -- Select a worker --</option>
+                                        foreach (var employee in Model.Employees)
+                                        {
+                                            <option value="@employee.Id">@employee.First_Name @employee.Last_Name</option>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <option> -- Select a worker --</option>
+                                </select>
+                                <select class="form-control mt-1" id="EmpId3" name="EmpId3">
+                                    @{
+                                        if (thisTeamJob.TeamMemberId3 == 1)
+                                        {
+                                            <option value="1"> ** Inactive worker ** </option>
+                                        }
+                                        else if (thisTeamJob.TeamMemberId3 == 2)
+                                        {
+                                            <option value="2">No Worker Today</option>
+                                        }
+                                        else if (thisTeamJob.TeamMemberId3 == 0)
+                                        {
+                                            // if unassigned - pull default employee
+                                            Employee defaultEmp3 = Model.Employees.FirstOrDefault(e => e.Id == team.DefaultTeamMember3Id);
+                                            if (defaultEmp3 == null)
+                                            {
+                                                <option value="2">No default set</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@defaultEmp3.Id">@defaultEmp3.First_Name @defaultEmp3.Last_Name</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // if Employee has been deleted from Tsheets, they won't be included in the Employee object.  Defaulting to Inactive Worker.
+                                            // This will overwrite the employee in the DB with a #1 for the employee ID once saved
+                                            Employee assignedEmp3 = Model.Employees.FirstOrDefault(u => u.Id == thisTeamJob.TeamMemberId3);
+                                            if (assignedEmp3 == null)
+                                            {
+                                                <option value="1"> ** Inactive worker ** </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@assignedEmp3.Id">@assignedEmp3.First_Name @assignedEmp3.Last_Name</option>
+                                            }
+                                        }
                                         <option> ----------------- </option>
-                                        <option value="1"> -- Previous worker -- </option>
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                // if assigned = false
-                                var default3 = Model.Employees.FirstOrDefault(u => u.Id == team.DefaultTeamMember3Id);
-                                if (default3 != null)
-                                {
-                                    <option value="@default3.Id">@default3.First_Name @default3.Last_Name</option>
-                                    <option> ----------------- </option>
-                                    <option value="1"> -- Previous worker -- </option>
-                                }
-                                else
-                                {
-                                    <option> -- Select a worker --</option>
-                                    <option> ----------------- </option>
-                                    <option value="1"> -- Previous worker -- </option>
-                                }
-                            }
+                                        <option value="1"> ** Inactive worker ** </option>
+                                        <option value="2">No Worker Today</option>
 
-                            foreach (var employee in Model.Employees)
-                            {
-                                <option value="@employee.Id">@employee.First_Name @employee.Last_Name</option>
-                            }
-                        }
-                    </select>
-                    @*<a id="SaveDefaultTeam-@team.Id"href="/" class="mt-2 btn btn-sm btn-secondary text-right">Save as Default</a>*@<br />
-                    <input type="submit" id="command1" class="btn btn-sm btn-primary" value="Save Today Only" name="command" />
-                    <input type="submit" id="command2" class="mt-1 btn btn-sm btn-secondary" value="Save (and future)" name="command" />
-                </div>
-            </form>
-        </div>
+                                        foreach (var employee in Model.Employees)
+                                        {
+                                            <option value="@employee.Id">@employee.First_Name @employee.Last_Name</option>
+                                        }
+                                    }
+                                </select>
+
+                                @*<a id="SaveDefaultTeam-@team.Id"href="/" class="mt-2 btn btn-sm btn-secondary text-right">Save as Default</a>*@<br />
+                                <input type="submit" id="command1" class="btn btn-sm btn-primary" value="Save Today Only" name="command" />
+                                <input type="submit" id="command2" class="mt-1 btn btn-sm btn-secondary" value="Save as Default" name="command" />
+                            </div>
+                        </form>
+                    </div>
                 }
             }
             else
